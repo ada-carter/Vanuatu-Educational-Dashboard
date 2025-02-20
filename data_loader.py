@@ -7,8 +7,9 @@ def clean_percentage(value):
         return np.nan
     if isinstance(value, str):
         try:
-            # Remove percentage sign and convert to float
-            return float(value.strip().rstrip('%')) / 100.0
+            # Remove percentage sign, commas, and spaces, then convert to float
+            cleaned = value.strip().rstrip('%').replace(',', '').strip()
+            return float(cleaned) / 100.0 if '%' in value else float(cleaned)
         except ValueError:
             return np.nan
     return value
@@ -16,7 +17,8 @@ def clean_percentage(value):
 def load_data(file_path):
     """Loads and preprocesses data from CSV file."""
     try:
-        df = pd.read_csv(file_path, header=None, encoding='utf-8')
+        # Read CSV with first row as header
+        df = pd.read_csv(file_path)
         
         table_coordinates = {
             "NER for ECCE": (0, 0, 10, 9),
@@ -32,65 +34,61 @@ def load_data(file_path):
             table = df.iloc[start_row:end_row+1, start_col:end_col+1].copy()
             
             if table_name == "NER for ECCE":
-                # Skip the title row and use the second row as header
-                headers = ['Province', 'School_Type']
+                # Create fixed column names
+                col_names = ['Province', 'School_Type']
                 for year in ['2018', '2019', '2020']:
-                    headers.extend([f'Female_{year}', f'Male_{year}', f'Total_{year}'])
+                    col_names.extend([f'Female_{year}', f'Male_{year}', f'Total_{year}'])
+                # Slice the columns to match the actual data
+                col_names = col_names[:table.shape[1]]
                 
-                # Skip first two rows (title and year)
+                # Skip first two rows and set column names
                 table = table.iloc[2:].copy()
-                table.columns = headers[:table.shape[1]]
+                table.columns = col_names
                 
-                # Convert percentage strings to floats
+                # Convert percentages to floats
                 for col in table.columns[2:]:
-                    table[col] = table[col].apply(clean_percentage)
+                    if col in table.columns:  # Check if column exists
+                        table[col] = table[col].map(clean_percentage)
             
             elif table_name == "Enrollment by School Type":
-                # Use first row as header
-                headers = ['School_Type', 'ECCE', 'Primary', 'Secondary']
-                table = table.iloc[1:].copy()
-                table = table.iloc[:, :len(headers)]
-                table.columns = headers
+                # Use known column names
+                col_names = ['School_Type', 'ECCE', 'Primary', 'Secondary']
+                table = table.iloc[1:, :len(col_names)].copy()
+                table.columns = col_names
                 
-                # Convert to numeric
+                # Convert numeric columns
                 for col in table.columns[1:]:
-                    table[col] = pd.to_numeric(table[col], errors='coerce')
+                    table[col] = pd.to_numeric(table[col].astype(str).str.replace(',', ''), errors='coerce')
             
             elif table_name == "Detailed Enrollment":
-                # Get actual number of columns
-                n_cols = table.shape[1]
-                headers = ['Province', 'PreSchool', 'PreSchool_Total'] + \
-                         [f'Grade_{i}' for i in range(1, 7)] + \
-                         ['Primary_Total'] + [f'Grade_{i}' for i in range(7, 15)] + \
-                         ['Secondary_Total', 'Total']
-                headers = headers[:n_cols]  # Trim to match actual columns
+                # Skip first row which contains headers
                 table = table.iloc[1:].copy()
-                table.columns = headers
-                for col in table.columns[1:]:
-                    table[col] = pd.to_numeric(table[col].str.replace(',', ''), errors='coerce')
+                # Convert numeric columns (all except first column)
+                for col in range(1, table.shape[1]):
+                    table.iloc[:, col] = pd.to_numeric(
+                        table.iloc[:, col].astype(str).str.replace(',', ''),
+                        errors='coerce'
+                    )
             
             elif table_name == "Teachers Distribution":
-                headers = ['Province', 'Gender', 'ECE', 'PS', 'PSET', 'SC', 'SS', 'Total']
+                # Skip first row and use known column names
                 table = table.iloc[1:].copy()
-                table.columns = headers[:table.shape[1]]
+                col_names = ['Province', 'Gender', 'ECE', 'PS', 'PSET', 'SC', 'SS', 'Total']
+                table.columns = col_names[:table.shape[1]]
+                
+                # Convert numeric columns
                 for col in table.columns[2:]:
                     table[col] = pd.to_numeric(table[col], errors='coerce')
             
             elif table_name == "Age Distribution":
-                # Calculate the number of provinces (6) plus Vanuatu total
-                n_regions = 7
-                headers = ['Year_Age']
-                for region in range(n_regions-1):  # Exclude Vanuatu total from loop
-                    headers.extend(['Female', 'Male', 'Total'])
-                headers.append('Vanuatu_Total')
-                
+                # Skip first row
                 table = table.iloc[1:].copy()
-                table.columns = headers[:table.shape[1]]
-                for col in table.columns[1:]:
-                    try:
-                        table[col] = pd.to_numeric(table[col].str.replace(',', '').str.strip(), errors='coerce')
-                    except AttributeError:
-                        table[col] = pd.to_numeric(table[col], errors='coerce')
+                # Convert numeric columns (all except Year column)
+                for col in range(1, table.shape[1]):
+                    table.iloc[:, col] = pd.to_numeric(
+                        table.iloc[:, col].astype(str).str.replace(',', '').str.strip(),
+                        errors='coerce'
+                    )
             
             # Reset index
             table = table.reset_index(drop=True)
