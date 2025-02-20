@@ -29,60 +29,69 @@ def load_data(file_path):
             # Extract table
             table = df.iloc[start_row:end_row+1, start_col:end_col+1].copy()
             
-            # Clean and set headers
             if table_name == "NER for ECCE":
                 # Skip first two rows and use fixed headers
-                table = table.iloc[2:].copy()  # Skip title and year rows
+                table = table.iloc[2:].copy()
+                # Add 'Total_2020' to match the data
                 table.columns = ['Province', 'School_Type', 
                                'Female_2018', 'Male_2018', 'Total_2018',
                                'Female_2019', 'Male_2019', 'Total_2019',
-                               'Female_2020', 'Male_2020']
-                # Convert percentages to floats
+                               'Female_2020', 'Male_2020', 'Total_2020']
                 for col in table.columns[2:]:
                     table[col] = table[col].apply(clean_percentage)
             
             elif table_name == "Enrollment by School Type":
-                # Use first row as header
+                # First row contains column names, but skip the empty cells
+                headers = table.iloc[0].dropna().tolist()
                 table = table.iloc[1:].copy()
-                table.columns = ['School_Type', 'ECCE', 'Primary', 'Secondary', 'Total']
+                # Make sure we have the right number of columns
+                table = table.iloc[:, :len(headers)]
+                table.columns = headers
                 # Convert to numeric
                 for col in table.columns[1:]:
                     table[col] = pd.to_numeric(table[col], errors='coerce')
             
             elif table_name == "Detailed Enrollment":
-                # Use meaningful column names
-                headers = ['Province'] + ['PreSchool'] + [f'Grade_{i}' for i in range(1, 7)] + \
+                # Get actual number of columns
+                n_cols = table.shape[1]
+                headers = ['Province', 'PreSchool', 'PreSchool_Total'] + \
+                         [f'Grade_{i}' for i in range(1, 7)] + \
                          ['Primary_Total'] + [f'Grade_{i}' for i in range(7, 15)] + \
                          ['Secondary_Total', 'Total']
+                headers = headers[:n_cols]  # Trim to match actual columns
                 table = table.iloc[1:].copy()
                 table.columns = headers
-                # Convert to numeric
                 for col in table.columns[1:]:
                     table[col] = pd.to_numeric(table[col].str.replace(',', ''), errors='coerce')
             
             elif table_name == "Teachers Distribution":
-                # Skip header row and use meaningful names
                 headers = ['Province', 'Gender', 'ECE', 'PS', 'PSET', 'SC', 'SS', 'Total']
                 table = table.iloc[1:].copy()
-                table.columns = headers
-                # Convert to numeric
+                table.columns = headers[:table.shape[1]]
                 for col in table.columns[2:]:
                     table[col] = pd.to_numeric(table[col], errors='coerce')
             
             elif table_name == "Age Distribution":
-                # Use meaningful column names
-                headers = ['Year_Age'] + ['Female', 'Male', 'Total'] * 6 + ['Vanuatu_Total']
+                # Calculate the number of provinces (6) plus Vanuatu total
+                n_regions = 7
+                headers = ['Year_Age']
+                for region in range(n_regions-1):  # Exclude Vanuatu total from loop
+                    headers.extend(['Female', 'Male', 'Total'])
+                headers.append('Vanuatu_Total')
+                
                 table = table.iloc[1:].copy()
-                table.columns = headers
-                # Convert to numeric
+                table.columns = headers[:table.shape[1]]
                 for col in table.columns[1:]:
-                    table[col] = pd.to_numeric(table[col].str.replace(',', ''), errors='coerce')
+                    try:
+                        table[col] = pd.to_numeric(table[col].str.replace(',', '').str.strip(), errors='coerce')
+                    except AttributeError:
+                        table[col] = pd.to_numeric(table[col], errors='coerce')
             
             # Reset index
             table = table.reset_index(drop=True)
             data[table_name] = table
-            
+        
         return data
     except Exception as e:
-        print(f"Error in load_data: {str(e)}")  # Add debug print
+        print(f"Error in load_data: {str(e)}")  # Debug print
         raise Exception(f"Error loading data: {str(e)}")
