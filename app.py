@@ -25,10 +25,8 @@ with tabs[0]:
     with col1:
         st.subheader("Enrollment by School Type")
         enrollment_data = data["Enrollment by School Type"]
-        # Aggregate enrollment by school type across provinces
-        enrollment_summary = enrollment_data[['ECCE', 'Primary_School', 'Secondary_School']].sum().reset_index()
-        enrollment_summary.columns = ['School_Type', 'Enrollment']
-        fig = px.pie(enrollment_summary, values='Enrollment', names='School_Type', title="Enrollment by School Type")
+        # Fix: Use correct column name 'School_Type'
+        fig = px.pie(enrollment_data, values='ECCE', names='School_Type', title="Enrollment by School Type")
         st.plotly_chart(fig)
     with col2:
         st.subheader("Teacher Distribution")
@@ -41,10 +39,12 @@ with tabs[1]:
     st.header("Net Enrollment Rate (NER) Analysis")
     ner_data = data["NER for ECCE"]
     st.subheader("NER Trends (2018-2020)")
-    fig = create_percentage_plot(ner_data, 
-                                 ['Female_2018', 'Male_2018', 'Total_2018',
-                                  'Female_2019', 'Male_2019', 'Total_2019',
-                                  'Female_2020', 'Male_2020', 'Total_2020'])
+    # Fix: Convert all columns to numeric before plotting
+    numeric_cols = ['Female_2018', 'Male_2018', 'Total_2018',
+                    'Female_2019', 'Male_2019', 'Total_2019',
+                    'Female_2020', 'Male_2020', 'Total_2020']
+    ner_data[numeric_cols] = ner_data[numeric_cols].apply(pd.to_numeric, errors='coerce')
+    fig = create_percentage_plot(ner_data, numeric_cols)
     st.plotly_chart(fig)
 
 with tabs[2]:

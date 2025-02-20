@@ -26,6 +26,9 @@ def load_data():
             "Teachers Distribution": pd.read_csv(os.path.join(data_dir, "teacher_distribution.csv")),
             "Age Distribution": pd.read_csv(os.path.join(data_dir, "age_distribution.csv"))
         }
+        # Clean percentage values in 'NER for ECCE' table
+        for col in data["NER for ECCE"].columns[2:]:
+            data["NER for ECCE"][col] = data["NER for ECCE"][col].apply(clean_percentage)
         return data
     except Exception as e:
         raise Exception(f"Error loading data: {str(e)}")
