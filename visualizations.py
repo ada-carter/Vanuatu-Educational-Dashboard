@@ -75,15 +75,20 @@ def create_teacher_distribution(data):
                  barmode='stack')
     return fig
 
-def create_gender_ratio_plot(data):
+def create_gender_ratio_plot(data, data_type="enrollment"):
     """Creates a bar chart comparing gender ratios."""
-    # Extract gender data
     try:
-        gender_data = data[data['Province'].isin(['F', 'M'])].copy()
-        gender_data = gender_data.rename(columns={'Province': 'Gender'})
-        
-        # Group by Gender and Province, then sum the 'Total' column
-        gender_summary = gender_data.groupby(['Gender', 'Province'])['Total'].sum().unstack()
+        if data_type == "enrollment":
+            # Extract gender data from enrollment data
+            gender_data = data[data['Province'].isin(['F', 'M'])].copy()
+            gender_data = gender_data.rename(columns={'Province': 'Gender'})
+            gender_summary = gender_data.groupby(['Gender', 'Province'])['Total'].sum().unstack()
+        elif data_type == "teacher":
+            # Extract gender data from teacher data
+            gender_summary = data.groupby(['Province', 'Gender'])['Total'].sum().unstack()
+        else:
+            st.error("Invalid data_type specified.")
+            return None
 
         # Create the bar chart
         fig = px.bar(gender_summary,
@@ -92,6 +97,9 @@ def create_gender_ratio_plot(data):
         return fig
     except KeyError as e:
         print(f"KeyError in create_gender_ratio_plot: {e}")
+        return None
+    except Exception as e:
+        print(f"Error creating gender ratio plot: {e}")
         return None
 
 def create_enrollment_heatmap(data):
