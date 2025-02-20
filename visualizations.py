@@ -78,11 +78,11 @@ def create_teacher_distribution(data):
 def create_gender_ratio_plot(data):
     """Creates a bar chart comparing gender ratios."""
     # Extract gender data
-    gender_data = data[data['Province'].isin(['F', 'M'])].copy()
-    gender_data = gender_data.rename(columns={'Province': 'Gender'})
+    gender_data = data[data['PreSchool'].isin(['F', 'M'])].copy()
+    gender_data = gender_data.rename(columns={'PreSchool': 'Gender'})
     
     # Group by Province and Gender, then sum the 'Total' column
-    gender_summary = gender_data.groupby(['Gender', 'Province'])['Total'].sum().unstack()
+    gender_summary = gender_data.groupby(['Province', 'Gender'])['Total'].sum().unstack()
 
     # Create the bar chart
     fig = px.bar(gender_summary,
