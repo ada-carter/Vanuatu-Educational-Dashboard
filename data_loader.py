@@ -44,8 +44,8 @@ def load_data(file_path):
             if table_name == "Table 1: NER for ECCE":
                 print(f"Column names before conversion: {table.columns}")  # Debugging
                 for col in table.columns[2:]:  # Start from the third column (2018 onwards)
-                    print(f"Data type of column {col} before conversion: {table[col].dtype}")  # Debugging
                     try:
+                        print(f"Data type of column {col} before conversion: {table[col].iloc[0].dtype}")  # Debugging
                         table[col] = table[col].str.rstrip('%').astype('float') / 100
                     except Exception as e:
                         print(f"Error converting column {col}: {e}")  # Debugging
