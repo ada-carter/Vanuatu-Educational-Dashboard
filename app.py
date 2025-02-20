@@ -16,7 +16,7 @@ except Exception as e:
     st.error(f"Error loading data: {e}")
     st.stop()
 
-# Use tabs for navigation
+# Use tabs for navigation (instead of outdated radio buttons)
 tabs = st.tabs(["Overview", "NER Analysis", "Enrollment Analysis", "Teacher Distribution", "Age Distribution"])
 
 with tabs[0]:
@@ -25,8 +25,10 @@ with tabs[0]:
     with col1:
         st.subheader("Enrollment by School Type")
         enrollment_data = data["Enrollment by School Type"]
-        # Use ECCE column for pie values
-        fig = px.pie(enrollment_data, values='ECCE', names='School_Type')
+        # Aggregate enrollment by school type across provinces
+        enrollment_summary = enrollment_data[['ECCE', 'Primary_School', 'Secondary_School']].sum().reset_index()
+        enrollment_summary.columns = ['School_Type', 'Enrollment']
+        fig = px.pie(enrollment_summary, values='Enrollment', names='School_Type', title="Enrollment by School Type")
         st.plotly_chart(fig)
     with col2:
         st.subheader("Teacher Distribution")
