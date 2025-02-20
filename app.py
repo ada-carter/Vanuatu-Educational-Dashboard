@@ -29,7 +29,7 @@ for table_name, data in all_data.items():
 
     # Visualizations
     st.header(f"Visualizations for Table: {table_name}")
-    numeric_columns = data.select_dtypes(include(['number']).columns
+    numeric_columns = data.select_dtypes(include=['number']).columns
 
     if not numeric_columns.empty:
         for column in numeric_columns:
