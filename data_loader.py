@@ -3,10 +3,12 @@ import numpy as np
 
 def clean_percentage(value):
     """Clean percentage values and convert to float."""
+    if pd.isna(value):
+        return np.nan
     if isinstance(value, str):
-        value = value.strip().rstrip('%')
         try:
-            return float(value) / 100
+            # Remove percentage sign and convert to float
+            return float(value.strip().rstrip('%')) / 100.0
         except ValueError:
             return np.nan
     return value
@@ -30,23 +32,26 @@ def load_data(file_path):
             table = df.iloc[start_row:end_row+1, start_col:end_col+1].copy()
             
             if table_name == "NER for ECCE":
-                # Skip first two rows and use fixed headers
+                # Skip the title row and use the second row as header
+                headers = ['Province', 'School_Type']
+                for year in ['2018', '2019', '2020']:
+                    headers.extend([f'Female_{year}', f'Male_{year}', f'Total_{year}'])
+                
+                # Skip first two rows (title and year)
                 table = table.iloc[2:].copy()
-                # Fixed: Correct number of columns (10 instead of 11)
-                table.columns = ['Province', 'School_Type', 
-                               'Female_2018', 'Male_2018', 'Total_2018',
-                               'Female_2019', 'Male_2019', 'Total_2019',
-                               'Female_2020', 'Male_2020']
+                table.columns = headers[:table.shape[1]]
+                
+                # Convert percentage strings to floats
                 for col in table.columns[2:]:
                     table[col] = table[col].apply(clean_percentage)
             
             elif table_name == "Enrollment by School Type":
-                # First row contains column names, but skip the empty cells
-                headers = table.iloc[0].dropna().tolist()
+                # Use first row as header
+                headers = ['School_Type', 'ECCE', 'Primary', 'Secondary']
                 table = table.iloc[1:].copy()
-                # Make sure we have the right number of columns
                 table = table.iloc[:, :len(headers)]
                 table.columns = headers
+                
                 # Convert to numeric
                 for col in table.columns[1:]:
                     table[col] = pd.to_numeric(table[col], errors='coerce')
