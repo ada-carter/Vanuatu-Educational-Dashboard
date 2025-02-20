@@ -3,7 +3,7 @@ import pandas as pd
 def load_data(file_path):
     """
     Loads data from a CSV file and extracts tables based on predefined coordinates.
-    Correctly infers headers and handles data types.
+    Correctly infers headers and handles data types, and handles duplicate column names.
 
     Args:
         file_path (str): The path to the CSV file.
@@ -29,7 +29,12 @@ def load_data(file_path):
 
             # Infer header row
             header_row = table.iloc[0]
-            table = table[1:]
+            # Check if the first element of the header row is the table name itself
+            if header_row.iloc[0] == df.iloc[start_row, start_col]:
+                table = table[2:]  # Skip the first two rows
+                header_row = df.iloc[start_row+1, start_col:end_col+1] #Real Header
+            else:
+                table = table[1:]  # Skip the first row
             table.columns = header_row
 
             # Reset index
@@ -50,6 +55,9 @@ def load_data(file_path):
                         table[col] = pd.to_numeric(table[col])
                     except:
                         pass
+            # Handle duplicate column names
+            table.columns = pd.Series(table.columns).fillna('').astype(str)
+            table = table.loc[:,~table.columns.duplicated()].copy()
 
             data[table_name] = table
 
