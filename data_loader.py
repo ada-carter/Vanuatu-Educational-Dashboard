@@ -3,6 +3,7 @@ import pandas as pd
 def load_data(file_path):
     """
     Loads data from a CSV file and extracts tables based on predefined coordinates.
+    Correctly infers headers and handles data types.
 
     Args:
         file_path (str): The path to the CSV file.
@@ -24,10 +25,32 @@ def load_data(file_path):
 
         data = {}
         for table_name, (start_row, start_col, end_row, end_col) in table_coordinates.items():
-            table = df.iloc[start_row:end_row+1, start_col:end_col+1]
-            # Reset index and column names
+            table = df.iloc[start_row:end_row+1, start_col:end_col+1].copy()
+
+            # Infer header row
+            header_row = table.iloc[0]
+            table = table[1:]
+            table.columns = header_row
+
+            # Reset index
             table = table.reset_index(drop=True)
-            table.columns = range(table.shape[1])  # Assign default column names
+
+            # Clean and convert Table 1 to numeric
+            if table_name == "Table 1: NER for ECCE":
+                for col in table.columns[2:]:  # Start from the third column (2018 onwards)
+                    try:
+                        table[col] = table[col].str.rstrip('%').astype('float') / 100
+                    except:
+                        pass
+
+            # Try converting other tables to numeric where possible
+            else:
+                for col in table.columns:
+                    try:
+                        table[col] = pd.to_numeric(table[col])
+                    except:
+                        pass
+
             data[table_name] = table
 
         return data
