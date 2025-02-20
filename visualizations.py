@@ -78,17 +78,21 @@ def create_teacher_distribution(data):
 def create_gender_ratio_plot(data):
     """Creates a bar chart comparing gender ratios."""
     # Extract gender data
-    gender_data = data[data['PreSchool'].isin(['F', 'M'])].copy()
-    gender_data = gender_data.rename(columns={'PreSchool': 'Gender'})
-    
-    # Group by Province and Gender, then sum the 'Total' column
-    gender_summary = gender_data.groupby(['Province', 'Gender'])['Total'].sum().unstack()
+    try:
+        gender_data = data[data['Province'].isin(['F', 'M'])].copy()
+        gender_data = gender_data.rename(columns={'Province': 'Gender'})
+        
+        # Group by Gender and Province, then sum the 'Total' column
+        gender_summary = gender_data.groupby(['Gender', 'Province'])['Total'].sum().unstack()
 
-    # Create the bar chart
-    fig = px.bar(gender_summary,
-                 title='Gender Distribution by Province',
-                 barmode='group')
-    return fig
+        # Create the bar chart
+        fig = px.bar(gender_summary,
+                     title='Gender Distribution by Province',
+                     barmode='group')
+        return fig
+    except KeyError as e:
+        print(f"KeyError in create_gender_ratio_plot: {e}")
+        return None
 
 def create_enrollment_heatmap(data):
     """Creates a heatmap of enrollment numbers."""

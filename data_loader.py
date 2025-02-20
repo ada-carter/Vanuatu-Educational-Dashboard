@@ -31,4 +31,5 @@ def load_data():
             data["NER for ECCE"][col] = data["NER for ECCE"][col].apply(clean_percentage)
         return data
     except Exception as e:
+        print(f"Error loading data: {e}")
         raise Exception(f"Error loading data: {str(e)}")

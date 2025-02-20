@@ -54,6 +54,7 @@ with tabs[2]:
     fig = create_enrollment_heatmap(enrollment_details)
     st.plotly_chart(fig)
     st.subheader("Gender Distribution")
+    # Fix: Pass the correct DataFrame to create_gender_ratio_plot
     fig = create_gender_ratio_plot(enrollment_details)
     st.plotly_chart(fig)
 
@@ -67,7 +68,9 @@ with tabs[3]:
         st.plotly_chart(fig)
     with col2:
         st.subheader("Gender Distribution of Teachers")
-        fig = create_gender_ratio_plot(teacher_data)
+        # Fix: Create gender ratio plot for teachers
+        gender_summary = teacher_data.groupby(['Province', 'Gender'])['Total'].sum().unstack()
+        fig = px.bar(gender_summary, title='Gender Distribution of Teachers', barmode='group')
         st.plotly_chart(fig)
 
 with tabs[4]:
