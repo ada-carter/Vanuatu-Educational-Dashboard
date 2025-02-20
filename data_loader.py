@@ -32,11 +32,11 @@ def load_data(file_path):
             if table_name == "NER for ECCE":
                 # Skip first two rows and use fixed headers
                 table = table.iloc[2:].copy()
-                # Add 'Total_2020' to match the data
+                # Fixed: Correct number of columns (10 instead of 11)
                 table.columns = ['Province', 'School_Type', 
                                'Female_2018', 'Male_2018', 'Total_2018',
                                'Female_2019', 'Male_2019', 'Total_2019',
-                               'Female_2020', 'Male_2020', 'Total_2020']
+                               'Female_2020', 'Male_2020']
                 for col in table.columns[2:]:
                     table[col] = table[col].apply(clean_percentage)
             
