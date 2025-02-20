@@ -31,12 +31,12 @@ def load_data(file_path):
             
             # Clean and set headers
             if table_name == "NER for ECCE":
-                # Skip first row (title), use second row as header
-                headers = ['Province', 'School_Type'] + ['Female_2018', 'Male_2018', 'Total_2018',
-                                                       'Female_2019', 'Male_2019', 'Total_2019',
-                                                       'Female_2020', 'Male_2020', 'Total_2020']
-                table = table.iloc[2:].copy()
-                table.columns = headers
+                # Skip first two rows and use fixed headers
+                table = table.iloc[2:].copy()  # Skip title and year rows
+                table.columns = ['Province', 'School_Type', 
+                               'Female_2018', 'Male_2018', 'Total_2018',
+                               'Female_2019', 'Male_2019', 'Total_2019',
+                               'Female_2020', 'Male_2020']
                 # Convert percentages to floats
                 for col in table.columns[2:]:
                     table[col] = table[col].apply(clean_percentage)
@@ -84,4 +84,5 @@ def load_data(file_path):
             
         return data
     except Exception as e:
+        print(f"Error in load_data: {str(e)}")  # Add debug print
         raise Exception(f"Error loading data: {str(e)}")

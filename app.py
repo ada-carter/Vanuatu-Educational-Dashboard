@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 from data_loader import load_data
-from visualizations import *
+from visualizations import (create_enrollment_trend, create_teacher_distribution,
+                          create_gender_ratio_plot, create_enrollment_heatmap,
+                          create_percentage_plot)
 
 # Page configuration
 st.set_page_config(layout="wide", page_title="Vanuatu Education Dashboard")
