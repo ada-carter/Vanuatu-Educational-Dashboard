@@ -42,11 +42,12 @@ def load_data(file_path):
 
             # Clean and convert Table 1 to numeric
             if table_name == "Table 1: NER for ECCE":
+                print(f"Column names before conversion: {table.columns}")  # Debugging
                 for col in table.columns[2:]:  # Start from the third column (2018 onwards)
                     try:
                         table[col] = table[col].str.rstrip('%').astype('float') / 100
-                    except:
-                        pass
+                    except Exception as e:
+                        print(f"Error converting column {col}: {e}")  # Debugging
 
             # Try converting other tables to numeric where possible
             else:
