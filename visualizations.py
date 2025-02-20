@@ -51,16 +51,24 @@ def display_table(data: pd.DataFrame):
 def create_enrollment_trend(data):
     """Creates a line plot showing enrollment trends by province."""
     fig = px.line(data, 
-                  x='Year_Age', 
-                  y=['Female', 'Male', 'Total'],
-                  title='Enrollment Trends by Gender',
-                  labels={'value': 'Number of Students', 'variable': 'Gender'})
+                  x=data.columns[0],  # First column contains years
+                  y=['Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3'],  # Use actual column names
+                  title='Enrollment Trends',
+                  labels={'value': 'Number of Students', 'variable': 'Category'})
     return fig
 
 def create_teacher_distribution(data):
     """Creates a stacked bar chart showing teacher distribution."""
-    fig = px.bar(data, 
-                 x='Province', 
+    teacher_summary = data.groupby('Province').agg({
+        'ECE': 'sum',
+        'PS': 'sum',
+        'PSET': 'sum',
+        'SC': 'sum',
+        'SS': 'sum'
+    }).reset_index()
+    
+    fig = px.bar(teacher_summary,
+                 x='Province',
                  y=['ECE', 'PS', 'PSET', 'SC', 'SS'],
                  title='Teacher Distribution by Province and Level',
                  labels={'value': 'Number of Teachers', 'variable': 'Education Level'},
@@ -69,27 +77,31 @@ def create_teacher_distribution(data):
 
 def create_gender_ratio_plot(data):
     """Creates a bar chart comparing gender ratios."""
-    fig = px.bar(data, 
-                 x='Province',
-                 y=['Female', 'Male'],
+    gender_summary = data.groupby(['Province', 'Gender'])['Total'].sum().unstack()
+    fig = px.bar(gender_summary,
                  title='Gender Distribution by Province',
                  barmode='group')
     return fig
 
 def create_enrollment_heatmap(data):
     """Creates a heatmap of enrollment numbers."""
+    numeric_cols = data.select_dtypes(include=['float64', 'int64']).columns
     fig = go.Figure(data=go.Heatmap(
-        z=data.iloc[:, 1:-1],
-        x=data.columns[1:-1],
-        y=data['Province'],
+        z=data[numeric_cols].values,
+        x=numeric_cols,
+        y=data.iloc[:, 0],  # First column contains Province names
         colorscale='RdYlBu'))
     fig.update_layout(title='Enrollment Heatmap by Grade and Province')
     return fig
 
 def create_percentage_plot(data, year_cols):
     """Creates a plot showing percentages over time."""
+    if not all(col in data.columns for col in year_cols):
+        available_cols = [col for col in year_cols if col in data.columns]
+        year_cols = available_cols
+    
     fig = px.line(data, 
-                  x=data.index, 
+                  x=data.index,
                   y=year_cols,
                   title='Percentage Trends Over Time',
                   labels={'value': 'Percentage', 'variable': 'Year'})

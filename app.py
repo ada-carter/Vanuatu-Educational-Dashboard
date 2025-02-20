@@ -35,13 +35,16 @@ if section == "Overview":
     with col1:
         st.subheader("Enrollment by School Type")
         enrollment_data = data["Enrollment by School Type"]
-        fig = px.pie(enrollment_data, values='Total', names='School_Type')
+        # Fix: Use ECCE column for values instead of Total
+        fig = px.pie(enrollment_data, values='ECCE', names='School_Type')
         st.plotly_chart(fig)
     
     with col2:
         st.subheader("Teacher Distribution")
         teacher_data = data["Teachers Distribution"]
-        fig = create_teacher_distribution(teacher_data)
+        # Fix: Show total teachers by province
+        teacher_summary = teacher_data.groupby('Province')['Total'].sum().reset_index()
+        fig = px.bar(teacher_summary, x='Province', y='Total', title='Total Teachers by Province')
         st.plotly_chart(fig)
 
 elif section == "NER Analysis":
