@@ -25,8 +25,8 @@ with tabs[0]:
     with col1:
         st.subheader("Enrollment by School Type")
         enrollment_data = data["Enrollment by School Type"]
-        # Fix: Use correct column name 'School_Type'
-        fig = px.pie(enrollment_data, values='ECCE', names='School_Type', title="Enrollment by School Type")
+        # Fix: Use correct column name 'Province'
+        fig = px.pie(enrollment_data, values='ECCE', names='Province', title="Enrollment by School Type")
         st.plotly_chart(fig)
     with col2:
         st.subheader("Teacher Distribution")
