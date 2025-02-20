@@ -1,71 +1,95 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 from data_loader import load_data
-from visualizations import create_bar_chart, create_scatter_plot, display_table
-from statistical_analysis import calculate_summary_statistics
+from visualizations import *
 
-# Set page configuration
-st.set_page_config(layout="wide")
+# Page configuration
+st.set_page_config(layout="wide", page_title="Vanuatu Education Dashboard")
 
 # Load data
 try:
-    all_data = load_data("VData.csv")
-except FileNotFoundError:
-    st.error("Error: 'VData.csv' not found. Please ensure the file is in the correct directory.")
-    st.stop()
+    data = load_data("VData.csv")
 except Exception as e:
     st.error(f"Error loading data: {e}")
     st.stop()
 
+# Sidebar
+st.sidebar.title("Navigation")
+section = st.sidebar.radio("Select Section", 
+    ["Overview",
+     "NER Analysis",
+     "Enrollment Analysis",
+     "Teacher Distribution",
+     "Age Distribution"])
+
 # Main content
 st.title("Vanuatu Educational Dashboard")
 
-# Data Overview
-st.header("Data Overview")
-for table_name, data in all_data.items():
-    st.subheader(f"Table: {table_name}")
-    st.dataframe(data.head())
+if section == "Overview":
+    st.header("Education System Overview")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Enrollment by School Type")
+        enrollment_data = data["Enrollment by School Type"]
+        fig = px.pie(enrollment_data, values='Total', names='School_Type')
+        st.plotly_chart(fig)
+    
+    with col2:
+        st.subheader("Teacher Distribution")
+        teacher_data = data["Teachers Distribution"]
+        fig = create_teacher_distribution(teacher_data)
+        st.plotly_chart(fig)
 
-    # Visualizations
-    st.header(f"Visualizations for Table: {table_name}")
-    numeric_columns = data.select_dtypes(include=['number']).columns
+elif section == "NER Analysis":
+    st.header("Net Enrollment Rate (NER) Analysis")
+    ner_data = data["NER for ECCE"]
+    
+    # Trend analysis
+    st.subheader("NER Trends (2018-2020)")
+    fig = create_percentage_plot(ner_data, 
+                               ['Female_2018', 'Male_2018', 'Total_2018',
+                                'Female_2019', 'Male_2019', 'Total_2019',
+                                'Female_2020', 'Male_2020', 'Total_2020'])
+    st.plotly_chart(fig)
 
-    if not numeric_columns.empty:
-        for column in numeric_columns:
-            # Bar Chart
-            st.subheader(f"Bar Chart of {column} in {table_name}")
-            try:
-                bar_chart = create_bar_chart(data, column)
-                if bar_chart:  # Check if the chart was created successfully
-                    st.plotly_chart(bar_chart, use_container_width=True)
-            except Exception as e:
-                st.error(f"Error creating bar chart for {column} in {table_name}: {e}")
+elif section == "Enrollment Analysis":
+    st.header("Enrollment Analysis")
+    enrollment_data = data["Detailed Enrollment"]
+    
+    # Enrollment heatmap
+    st.subheader("Enrollment Distribution")
+    fig = create_enrollment_heatmap(enrollment_data)
+    st.plotly_chart(fig)
+    
+    # Gender distribution
+    st.subheader("Gender Distribution")
+    fig = create_gender_ratio_plot(enrollment_data)
+    st.plotly_chart(fig)
 
-            # Scatter Plot
-            st.subheader(f"Scatter Plot of {column} in {table_name}")
-            try:
-                scatter_plot = create_scatter_plot(data, column)
-                if scatter_plot:  # Check if the chart was created successfully
-                    st.plotly_chart(scatter_plot, use_container_width=True)
-            except Exception as e:
-                st.error(f"Error creating scatter plot for {column} in {table_name}: {e}")
-    else:
-        st.warning(f"No numeric columns found in table '{table_name}'.")
+elif section == "Teacher Distribution":
+    st.header("Teacher Distribution Analysis")
+    teacher_data = data["Teachers Distribution"]
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Teachers by Province")
+        fig = create_teacher_distribution(teacher_data)
+        st.plotly_chart(fig)
+    
+    with col2:
+        st.subheader("Gender Distribution of Teachers")
+        fig = create_gender_ratio_plot(teacher_data)
+        st.plotly_chart(fig)
 
-    # Statistical Analysis
-    st.header(f"Statistical Analysis for Table: {table_name}")
-    if not numeric_columns.empty:
-        for column in numeric_columns:
-            try:
-                st.subheader(f"Summary Statistics for {column} in {table_name}")
-                summary_statistics = calculate_summary_statistics(data, column)
-                st.write(summary_statistics)
-            except Exception as e:
-                st.error(f"Error calculating summary statistics for {column} in {table_name}: {e}")
-    else:
-        st.warning(f"No statistical analysis available for table '{table_name}' (no numeric columns).")
+elif section == "Age Distribution":
+    st.header("Age Distribution Analysis")
+    age_data = data["Age Distribution"]
+    
+    st.subheader("Enrollment Trends by Age")
+    fig = create_enrollment_trend(age_data)
+    st.plotly_chart(fig)
 
-    # Data Table
-    st.header(f"Data Table: {table_name}")
-    display_table(data)
+# Footer
+st.markdown("---")
+st.markdown("Data source: Vanuatu Ministry of Education")
