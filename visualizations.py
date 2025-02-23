@@ -1,10 +1,8 @@
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
-import geopandas as gpd
 import json
 import streamlit as st
-from data.province_coordinates import PROVINCE_COLORS
 
 def create_bar_chart(data: pd.DataFrame, column: str):
     """
@@ -50,124 +48,6 @@ def display_table(data: pd.DataFrame):
         data (pd.DataFrame): The DataFrame to be displayed.
     """
     st.dataframe(data)
-
-def load_province_shapes():
-    """Load and process Vanuatu province shapefiles."""
-    try:
-        # Read the shapefile
-        gdf = gpd.read_file('data/shapefiles/vut_admbnda_adm1_spc_20180824/vut_admbnda_adm1_spc_20180824.shp')
-        
-        # Convert to GeoJSON for Plotly
-        geojson = json.loads(gdf.to_json())
-        
-        # Create a mapping between province names and ADM1_EN
-        province_mapping = {
-            'Torba': 'TORBA',
-            'Sanma': 'SANMA',
-            'Penama': 'PENAMA',
-            'Malampa': 'MALAMPA',
-            'Shefa': 'SHEFA',
-            'Tafea': 'TAFEA'
-        }
-        
-        return geojson, province_mapping
-    except Exception as e:
-        st.error(f"Error loading shapefile: {e}")
-        return None, None
-
-def create_map_visualization(data, values_column, title):
-    """Creates a choropleth map visualization of Vanuatu provinces using actual shapefiles."""
-    try:
-        # Remove 'National' row if it exists and create a copy
-        data = data[data['Province'] != 'National'].copy()
-        
-        # Load shapefile data
-        gdf = gpd.read_file('data/shapefiles/vut_admbnda_adm1_spc_20180824/vut_admbnda_adm1_spc_20180824.shp')
-        
-        # Convert to a projected CRS (EPSG:3832 - Vanuatu 1960 / UTM zone 58S)
-        gdf = gdf.to_crs(epsg=3832)
-        
-        # Create province mapping
-        province_mapping = {
-            'TORBA': 'Torba',
-            'SANMA': 'Sanma', 
-            'PENAMA': 'Penama',
-            'MALAMPA': 'Malampa',
-            'SHEFA': 'Shefa',
-            'TAFEA': 'Tafea'
-        }
-        
-        # Map province names
-        gdf['Province'] = gdf['ADM1_EN'].map(province_mapping)
-        
-        # Merge data with geodataframe
-        gdf = gdf.merge(data, on='Province', how='left')
-        
-        # Convert back to WGS 84 for plotting
-        gdf = gdf.to_crs(epsg=4326)
-        
-        # Get bounds
-        bounds = gdf.total_bounds  # returns (minx, miny, maxx, maxy)
-        
-        # Create the choropleth map
-        fig = px.choropleth_mapbox(
-            gdf,
-            geojson=gdf.__geo_interface__,
-            locations=gdf.index,
-            color=values_column,
-            color_continuous_scale='Viridis',
-            mapbox_style='carto-positron',
-            center={'lat': -15.3767, 'lon': 166.9592},  # Center of Vanuatu
-            zoom=5,
-            opacity=0.7,
-            title=title,
-            labels={values_column: 'Value'}
-        )
-
-        # Update layout
-        fig.update_layout(
-            margin={"r": 0, "t": 30, "l": 0, "b": 0},
-            height=600,
-            mapbox=dict(
-                bounds=dict(
-                    west=bounds[0],
-                    east=bounds[2],
-                    south=bounds[1],
-                    north=bounds[3]
-                )
-            )
-        )
-        
-        return fig
-    except Exception as e:
-        st.error(f"Error creating map visualization: {e}")
-        # Create a simple fallback figure
-        return px.scatter(data, x='Province', y=values_column, title=f"{title} (Map Unavailable)")
-
-def create_enrollment_trend(data):
-    """Creates an enhanced line plot showing enrollment trends."""
-    data_melted = pd.melt(data, 
-                         id_vars=['Year', 'Province'], 
-                         value_vars=['Female', 'Male'],
-                         var_name='Gender',
-                         value_name='Enrollment')
-    
-    fig = px.line(data_melted,
-                  x='Year',
-                  y='Enrollment',
-                  color='Province',
-                  line_dash='Gender',
-                  title='Enrollment Trends by Province and Gender',
-                  labels={'Enrollment': 'Number of Students'},
-                  color_discrete_map=PROVINCE_COLORS)
-    
-    fig.update_layout(
-        xaxis_title="Year",
-        yaxis_title="Number of Students",
-        legend_title="Province / Gender"
-    )
-    
-    return fig
 
 def create_teacher_distribution(data):
     """Creates an enhanced stacked bar chart showing teacher distribution."""
@@ -310,4 +190,65 @@ def create_age_distribution_analysis(data):
     fig.update_xaxes(title_text="Province")
     fig.update_yaxes(title_text="Number of Students")
     
+    return fig
+
+def create_population_trend_visualization(population_data, school_age_only=False):
+    """Creates a visualization of population trends with option to show only school-age groups."""
+    # Define age groups to show
+    if school_age_only:
+        age_groups = ['0--4', '5--9', '10--14', '15--19']
+    else:
+        age_groups = [col for col in population_data.columns if '--' in col]
+
+    # Convert Year to string to force categorical treatment
+    population_data = population_data.copy()
+    population_data['Year'] = population_data['Year'].astype(str)
+
+    # Melt the dataframe for plotting
+    melted_data = population_data.melt(
+        id_vars=['Year'],
+        value_vars=age_groups,
+        var_name='Age Group',
+        value_name='Population'
+    )
+
+    # Create stacked bar chart
+    fig = px.bar(
+        melted_data,
+        x='Year',
+        y='Population',
+        color='Age Group',
+        title='Population Distribution by Age Group in Vanuatu (2009-2020)',
+        barmode='stack',
+        color_discrete_sequence=px.colors.qualitative.Set3,
+        category_orders={"Year": ["2009", "2016", "2020"]}  # Force specific order
+    )
+
+    # Update layout
+    fig.update_layout(
+        yaxis=dict(title='Population'),
+        xaxis=dict(
+            title='Year',
+            type='category',  # Force categorical axis
+            tickmode='array',
+            tickvals=['2009', '2016', '2020'],
+            ticktext=['2009', '2016', '2020']
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+        height=500,
+        margin=dict(t=60),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+
+    # Add gridlines for better readability
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+
     return fig

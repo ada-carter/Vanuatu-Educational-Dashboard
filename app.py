@@ -4,8 +4,9 @@ import plotly.express as px
 import os
 from data_loader import load_data
 from visualizations import *
-from data.province_coordinates import PROVINCE_COLORS
+from detailed_enrollment_visualizations import *  # Import the new script
 import plotly.graph_objects as go
+import json
 
 # Page configuration
 st.set_page_config(layout="wide", page_title="Vanuatu Education Report 2020-2023")
@@ -18,12 +19,6 @@ try:
             data[key] = data[key][data[key]["Province"] != "National"]
 except Exception as e:
     st.error(f"Error loading data: {e}")
-    st.stop()
-
-# Check for required files
-shapefile_path = "data/shapefiles/vut_admbnda_adm1_spc_20180824/vut_admbnda_adm1_spc_20180824.shp"
-if not os.path.exists(shapefile_path):
-    st.error("Missing shapefile. Please ensure the province shapefiles exist in the data/shapefiles directory.")
     st.stop()
 
 # Report Header
@@ -42,11 +37,8 @@ Key findings include:
 - [Placeholder for key finding 2]
 - [Placeholder for key finding 3]
 """)
-
 # Vanuatu Context Section
 st.header("Vanuatu in Global Context")
-
-# Load HPI data
 try:
     hpi_data = pd.read_csv("data/hpi.csv")
 except Exception as e:
@@ -61,133 +53,219 @@ if hpi_data is not None:
         'Ecological Footprint': {'description': 'Per capita Ecological Footprint (global hectares) - lower is better', 'inverse': True}
     }
     
-    # User input for country comparison
-    user_country = st.text_input("Add a country for comparison:", "")
+    available_countries = sorted(hpi_data['country'].unique().tolist())
+    default_country = "United States" if "United States" in available_countries else available_countries[0]
+    user_country = st.selectbox("Select a country for comparison:", available_countries, 
+                               index=available_countries.index(default_country))
     
-    # Create tabs for different metrics
     metric_tabs = st.tabs(list(metrics.keys()))
     
     for i, (metric, info) in enumerate(metrics.items()):
         with metric_tabs[i]:
-            # Get Vanuatu's data
-            vanuatu_data = hpi_data[hpi_data['country'] == 'Vanuatu'].copy()
+            metric_data = hpi_data.copy().dropna(subset=[metric])
             
-            # Get top 9 excluding Vanuatu
-            if info['inverse']:
-                other_data = hpi_data[hpi_data['country'] != 'Vanuatu'].nsmallest(9, metric).copy()
-            else:
-                other_data = hpi_data[hpi_data['country'] != 'Vanuatu'].nlargest(9, metric).copy()
+            # Format numbers for display
+            if metric == 'HPI':
+                metric_data[metric] = metric_data[metric].apply(lambda x: float(f"{x:.1f}"))
             
-            # Combine data
-            plot_data = pd.concat([other_data, vanuatu_data])
+            metric_data['ranking'] = metric_data[metric].rank(ascending=info['inverse'], method='min').astype(int)
             
-            # Sort by metric value
-            plot_data = plot_data.sort_values(by=metric, ascending=info['inverse'])
+            # Get reference data
+            vanuatu_data = metric_data[metric_data['country'] == 'Vanuatu'].copy()
+            user_country_data = metric_data[metric_data['country'] == user_country].copy()
+            other_data = metric_data[~metric_data['country'].isin(['Vanuatu', user_country])]
             
-            # Add user selected country if it exists
-            if user_country and user_country in hpi_data['country'].values and user_country != 'Vanuatu':
-                user_country_data = hpi_data[hpi_data['country'] == user_country].copy()
-                plot_data = pd.concat([plot_data, user_country_data])
+            total_countries = len(metric_data)
+            vanuatu_rank = int(vanuatu_data['ranking'].iloc[0]) if not vanuatu_data.empty else "N/A"
+            user_country_rank = int(user_country_data['ranking'].iloc[0]) if not user_country_data.empty else "N/A"
             
             col1, col2 = st.columns([2,1])
             
             with col1:
                 st.write(f"**{info['description']}**")
+                if vanuatu_rank != "N/A":
+                    st.write(f"Vanuatu ranks **{vanuatu_rank}** out of {total_countries} countries")
+                if user_country_rank != "N/A":
+                    st.write(f"{user_country} ranks **{user_country_rank}** out of {total_countries} countries")
                 
-                # Create custom color scale
-                colors = ['#1B5E20', '#2E7D32', '#388E3C', '#43A047', '#4CAF50', 
-                         '#66BB6A', '#81C784', '#A5D6A7', '#C8E6C9', '#E8F5E9'] if info['inverse'] else \
-                        ['#E8F5E9', '#C8E6C9', '#A5D6A7', '#81C784', '#66BB6A', 
-                         '#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20']
+                # Get top/bottom 10 countries
+                if info['inverse']:
+                    plot_data = other_data.nsmallest(10, metric).copy()
+                else:
+                    plot_data = other_data.nlargest(10, metric).copy()
                 
-                color_map = {country: colors[i] for i, country in enumerate(other_data['country'])}
-                color_map['Vanuatu'] = '#9C27B0'  # Lavender purple for Vanuatu
-                if user_country in color_map:
-                    color_map[user_country] = '#FFA726'  # Orange for user country
+                # Always include Vanuatu and selected country
+                for special_data in [vanuatu_data, user_country_data]:
+                    if not special_data.empty:
+                        plot_data = pd.concat([plot_data, special_data])
                 
+                # Sort the data
+                plot_data = plot_data.sort_values(metric, ascending=info['inverse'])
+                
+                # Create the visualization
+                color_scale = px.colors.sequential.YlGn_r if info['inverse'] else px.colors.sequential.YlGn
                 fig = px.bar(
                     plot_data,
                     x='country',
                     y=metric,
-                    title=f'{"Lowest" if info["inverse"] else "Top"} 10 Countries by {metric}',
-                    color='country',
-                    color_discrete_map=color_map
+                    title=f'{"Lowest" if info["inverse"] else "Highest"} Values for {metric}',
+                    color=metric,
+                    color_continuous_scale=color_scale
                 )
                 
                 fig.update_layout(
                     showlegend=False,
-                    xaxis_tickangle=45,
-                    height=500
+                    xaxis=dict(
+                        tickangle=45,
+                        tickmode='array',
+                        tickvals=plot_data['country'],
+                        ticktext=[f'<b>{c}</b>' if c in ['Vanuatu', user_country] else c 
+                                for c in plot_data['country']]
+                    ),
+                    height=500,
+                    margin=dict(b=100)
                 )
-                
                 st.plotly_chart(fig, use_container_width=True)
             
             with col2:
-                st.write("Rankings:")
-                styled_df = plot_data[['country', metric]].reset_index(drop=True)
+                st.write("Rankings (sorted by performance):")
                 
-                # Style the dataframe to highlight Vanuatu
-                def highlight_vanuatu(row):
-                    color = '#F3E5F5' if row['country'] == 'Vanuatu' else ''
-                    return ['background-color: {}'.format(color) for _ in row]
+                # Prepare dataset for display
+                display_data = metric_data[['country', metric, 'ranking']].copy()
+                # Format numbers based on metric type
+                if metric == 'HPI':
+                    display_data[metric] = display_data[metric].apply(lambda x: '{:.1f}'.format(float(x)))
+                else:
+                    display_data[metric] = display_data[metric].apply(lambda x: '{:.2f}'.format(float(x)))
                 
-                styled_df = styled_df.style.apply(highlight_vanuatu, axis=1)
-                st.dataframe(styled_df, hide_index=True, use_container_width=True)
+                display_data['ranking'] = display_data['ranking'].astype(int)
+                display_data = display_data.sort_values('ranking')
+                
+                # Calculate Vanuatu's row number
+                vanuatu_idx = display_data.index[display_data['country'] == 'Vanuatu'].tolist()[0]
+                
+                def highlight_countries(row):
+                    color = ''
+                    if row['country'] == 'Vanuatu':
+                        color = 'background-color: #F3E5F5'
+                    elif row['country'] == user_country:
+                        color = 'background-color: #FFF3E0'
+                    return [color] * len(row)
+                
+                # Style the dataframe
+                styled_df = display_data.style.apply(highlight_countries, axis=1)
+                
+                # Display scrollable dataframe with scroll position set to Vanuatu
+                element = st.dataframe(
+                    styled_df,
+                    hide_index=True,
+                    use_container_width=True,
+                    height=400
+                )
+                
+                # Use JavaScript to scroll to Vanuatu's position
+                row_height = 35  # Approximate height of each row in pixels
+                scroll_position = max(0, (vanuatu_idx * row_height) - 200)  # Center Vanuatu in view
+                st.markdown(
+                    f"""
+                    <script>
+                        const element = document.querySelector('.stDataFrame div[data-testid="stDataFrame"] div');
+                        element.scrollTop = {scroll_position};
+                    </script>
+                    """,
+                    unsafe_allow_html=True
+                )
+                
+                # Add note about scrolling
+                st.caption("Table automatically scrolls to Vanuatu's position. Vanuatu and selected country are highlighted.")
 
-# Geographic Distribution
-st.header("1. Geographic Distribution of Educational Resources")
-st.subheader("1.1 Provincial Overview")
-
-col1, col2 = st.columns([2,1])
-with col1:
-    try:
-        map_fig = create_map_visualization(
-            data["Enrollment by School Type"], 
-            'Total', 
-            'Educational Institution Distribution'
-        )
-        if map_fig is not None:
-            st.plotly_chart(map_fig, use_container_width=True)
-    except Exception as e:
-        st.error(f"Error displaying map: {e}")
-
-with col2:
-    st.markdown("""
-    **Analysis of Regional Distribution**
+# Population Trends Section
+st.header("Population Trends")
+try:
+    population_data = pd.read_csv("data/Population.csv")
     
-    The geographic distribution of educational institutions reveals:
-    - [Placeholder for distribution pattern]
-    - [Placeholder for regional disparities]
-    - [Placeholder for access challenges]
-    """)
-
-# Enrollment Trends
-st.header("2. Enrollment Patterns and Trends")
-st.subheader("2.1 Overall Enrollment Statistics")
-
-col1, col2 = st.columns([2,1])
-with col1:
-    enrollment_data = data["Enrollment by School Type"]
-    enrollment_data = enrollment_data[enrollment_data['Province'].isin(PROVINCE_COLORS.keys())].copy()
-    fig = px.sunburst(
-        enrollment_data, 
-        path=['Province'], 
-        values='Total',
-        color='Province',
-        color_discrete_map=PROVINCE_COLORS,
-        title="Total Enrollment Distribution"
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-with col2:
-    st.markdown("""
-    **Key Enrollment Insights**
+    # Add toggle for school-age only view
+    school_age_only = st.checkbox("Show only school-age population (0-19 years)", value=True)
     
-    Analysis of enrollment data shows:
-    - [Placeholder for enrollment trends]
-    - [Placeholder for provincial comparisons]
-    - [Placeholder for growth patterns]
-    """)
+    col1, col2 = st.columns([2,1])
+    with col1:
+        pop_fig = create_population_trend_visualization(population_data, school_age_only)
+        st.plotly_chart(pop_fig, use_container_width=True)
+    
+    with col2:
+        st.markdown("""
+        **Population Growth Analysis**
+        
+        The population trends show:
+        - Consistent growth across age groups
+        - School-age population (0-19) forms a significant demographic
+        - Notable expansion in youth population
+        - Growing demand for educational resources
+        """)
+        
+        # Calculate and display key statistics
+        total_growth = (population_data['Total Population'].iloc[-1] / population_data['Total Population'].iloc[0] - 1) * 100
+        school_age_pop = population_data[['0--4', '5--9', '10--14', '15--19']].sum(axis=1).iloc[-1]
+        school_age_percent = (school_age_pop / population_data['Total Population'].iloc[-1]) * 100
+        
+        latest_year = population_data['Year'].max()
+        st.markdown(f"""
+        **Key Statistics ({latest_year}):**
+        - Total Population: {population_data['Total Population'].iloc[-1]:,.0f}
+        - School-age Population (0-19): {school_age_pop:,.0f}
+        - School-age percentage: {school_age_percent:.1f}%
+        - Population growth (2009-2020): {total_growth:.1f}%
+        """)
+
+except Exception as e:
+    st.error(f"Error loading population data: {e}")
+
+# New Province Data Visualizations Section
+st.header("Province Data Visualizations")
+
+try:
+    # Load detailed enrollment data
+    detailed_enrollment = data["Detailed Enrollment"]
+    detailed_enrollment = preprocess_data(detailed_enrollment)
+
+    # Create tabs for different visualizations
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "Total Enrollment", "Enrollment by Level", "Gender Distribution", "Grade Trends", "Total vs Secondary"
+    ])
+
+    with tab1:
+        # Total Enrollment by Province
+        fig1 = create_total_enrollment_bar_chart(detailed_enrollment)
+        if fig1:
+            st.plotly_chart(fig1, use_container_width=True)
+
+    with tab2:
+        # Enrollment by Education Level
+        fig2 = create_enrollment_type_pie_chart(detailed_enrollment)
+        if fig2:
+            st.plotly_chart(fig2, use_container_width=True)
+
+    with tab3:
+        # Gender Distribution by Education Level
+        fig3 = create_gender_distribution_bar_chart(detailed_enrollment)
+        if fig3:
+            st.plotly_chart(fig3, use_container_width=True)
+
+    with tab4:
+        # Enrollment Trend by Grade
+        fig4 = create_grade_enrollment_line_chart(detailed_enrollment)
+        if fig4:
+            st.plotly_chart(fig4, use_container_width=True)
+
+    with tab5:
+        # Total vs Secondary Enrollment
+        fig5 = create_total_vs_secondary_scatter(detailed_enrollment)
+        if fig5:
+            st.plotly_chart(fig5, use_container_width=True)
+
+except Exception as e:
+    st.error(f"Error in Province Data Visualizations: {e}")
+
 
 # Gender Analysis
 st.header("3. Gender Equity in Education")
