@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Torba"},
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[167.5500, -13.8688], [167.8500, -13.8688], [167.8500, -14.2688], [167.5500, -14.2688], [167.5500, -13.8688]]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Sanma"},
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[166.9167, -15.4833], [167.2167, -15.4833], [167.2167, -15.8833], [166.9167, -15.8833], [166.9167, -15.4833]]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Penama"},
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[167.9667, -15.2333], [168.2667, -15.2333], [168.2667, -15.6333], [167.9667, -15.6333], [167.9667, -15.2333]]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Malampa"},
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[167.8000, -16.4000], [168.1000, -16.4000], [168.1000, -16.8000], [167.8000, -16.8000], [167.8000, -16.4000]]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Shefa"},
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[168.3167, -17.7333], [168.6167, -17.7333], [168.6167, -18.1333], [168.3167, -18.1333], [168.3167, -17.7333]]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Tafea"},
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[169.2667, -19.5333], [169.5667, -19.5333], [169.5667, -19.9333], [169.2667, -19.9333], [169.2667, -19.5333]]]]
+      }
+    }
+  ]
+}
