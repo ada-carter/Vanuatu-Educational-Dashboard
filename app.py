@@ -13,8 +13,8 @@ st.set_page_config(layout="wide", page_title="Vanuatu Education Report 2020-2023
 
 # Add flag image to the top left
 st.image("data/Flag_of_Vanuatu.svg", width=100)
-
-# Load data
+    
+# Load data 
 try:
     data = load_data()
     # Exclude national row in "Enrollment by School Type" if present
@@ -333,6 +333,82 @@ While official policy supports local languages, in-class approaches differ widel
 limited materials, while others integrate community knowledge to make lessons more relevant and inclusive.
 """)
 
+st.subheader("Decolonization of Schooling in Vanuatu")
+st.markdown("""
+#### Colonial Legacy and Independence
+Vanuatu's education system was shaped by its unique colonial history as an Anglo-French Condominium. At Independence 
+in 1980, the new nation inherited two separate school systems – one English-medium (from British rule) and one 
+French-medium (from French rule). This dual structure created linguistic and cultural cleavages in Ni-Vanuatu society, 
+as francophone and anglophone communities attended different schools with different curricula.
+
+After independence, the government recognized that these parallel colonial-era structures were inefficient and divisive, 
+and it began efforts to unify the education administration. Over time, the formerly separate British and French education 
+bureaucracies merged under a single Ministry of Education, formalized by the Education Act of 2014. This was a crucial 
+step in decolonizing Vanuatu's schooling, establishing one national system instead of two. However, remnants of the dual 
+system persist, most visibly in the continued use of English and French as parallel languages of instruction in schools.
+
+#### Vernacular Languages and Culturally Relevant Curriculum
+A cornerstone of decolonizing education in Vanuatu has been the promotion of indigenous languages and knowledge in the 
+classroom. Since independence, educators and policymakers have debated how to reduce reliance on colonial languages 
+(English, French) and better integrate Bislama and vernacular languages (the mother tongues of Ni-Vanuatu).
+
+In the late 1990s, this debate led to concrete policy proposals. The Education Master Plan 2000–2010 recommended 
+introducing local languages into early education, prompting the government to draft a National Vernacular Education 
+Policy in 1999. Pilot programs were launched to teach children in their mother tongue during the first years of 
+primary schooling, with English or French introduced later. This represented a radical shift from the colonial model 
+where European languages dominated from Grade 1.
+
+By the mid-2010s, Vanuatu's Ministry of Education formally encouraged bilingual literacy, starting with vernacular or 
+Bislama in early grades, then transitioning to English and French in later grades. This bilingual policy is decolonizing 
+in that it validates Ni-Vanuatu linguistic heritage within formal schooling, rather than privileging only the colonial 
+tongues.
+
+#### Indigenous Knowledge and "Kastom" in Schools
+Alongside language changes, Vanuatu has sought to indigenize the curriculum by incorporating kastom (traditional knowledge, 
+values, and practices) into education. The recognition that Western-style schooling had marginalized local culture led 
+to calls for "contextualization" of the curriculum. 
+
+Researchers noted that the lack of vernacular language and local content in schools contributed to the erosion of 
+traditional knowledge in communities. In response, the Vanuatu Cultural Centre and education authorities initiated 
+curriculum reforms around 2010 to infuse courses with traditional ecological knowledge, local history, music, and arts.
+""")
+
+# Add tabbed interface with key reforms
+reform_tabs = st.tabs(["Unified Administration", "Language Policy", "Bilingual Curriculum", "Integration of Kastom"])
+
+with reform_tabs[0]:
+    st.markdown("""
+    ### Unified Education Administration (1980s–2010s)
+    Merging the dual French/English school systems into one national system under the Ministry of Education, culminating 
+    in the Education Act 2014. This eliminated parallel curricula and governance, creating a more cohesive national 
+    education structure.
+    """)
+
+with reform_tabs[1]:
+    st.markdown("""
+    ### National Language Policy (1999–2005)
+    Development of a vernacular language in education policy to introduce indigenous languages (and Bislama, the lingua franca) 
+    as languages of instruction in early primary grades. By using children's first languages in schooling, this policy aims to 
+    improve literacy and preserve local languages that were previously excluded from formal classrooms.
+    """)
+
+with reform_tabs[2]:
+    st.markdown("""
+    ### Bilingual Curriculum Reform (2010s)
+    Implementation of a new bilingual national curriculum that balances English and French and incorporates vernacular instruction. 
+    Students now begin learning in their mother tongue or Bislama, then gradually transition to English or French, an approach 
+    designed to strengthen foundational learning and bridge to colonial languages.
+    """)
+
+with reform_tabs[3]:
+    st.markdown("""
+    ### Integration of Kastom and Local Content (2010–present)
+    Ongoing revision of curricula to include traditional knowledge, cultural skills, and local examples across subjects. 
+    The National Curriculum Framework emphasizes Vanuatu's cultural heritage, and partnerships with the Vanuatu Cultural 
+    Centre have helped produce teaching resources on kastom. For instance, local stories and environmental knowledge are 
+    used to contextualize literacy and science lessons, validating indigenous perspectives in formal education.
+    """)
+
 st.subheader("Education for Resilience and Sustainable Development")
 st.markdown("""
 **Disaster Risk Reduction (DRR) and Climate Change**  
@@ -346,6 +422,48 @@ st.markdown("""
   local agricultural practices) as part of the mainstream curriculum. This enriches science education, 
   fosters local pride, and addresses real-world community challenges.
 """)
+
+st.subheader("Radical Movements and Educational Change in Vanuatu")
+
+col1, col2 = st.columns([1, 1])
+with col1:
+    st.markdown("""
+    #### Education and the Independence Movement
+    Educational change in Vanuatu has often been driven by radical movements and visionary leaders who saw schooling as 
+    central to independence and national development. During the 1970s independence struggle, activists of the Vanua'aku 
+    Pati (the leading nationalist party) criticized the colonial education system for serving foreign interests and a small elite. 
+    
+    They adopted a philosophy of "self-reliance" in development—influenced by other decolonization movements—and pledged 
+    to reshape education to serve local needs. First Prime Minister Father Walter Lini espoused a form of Melanesian socialism 
+    that blended traditional Melanesian values with modern nation-building.
+    
+    Early post-independence policies emphasized basic education and rural training over elitist secondary/tertiary tracks. 
+    For example, the government expanded primary schools into remote villages and supported non-formal education centers 
+    to reach those outside the colonial schools.
+    
+    The discourse of self-reliance continued beyond independence, influencing education and development plans well into 
+    the 21st century. Even as global frameworks like the Millennium Development Goals and Sustainable Development Goals emerged, 
+    Ni-Vanuatu civil society and leaders stressed that local values (kastom) and self-determination should guide how such 
+    goals are pursued.
+    """)
+    
+with col2:
+    st.markdown("""
+    #### Grassroots Advocacy and Resistance
+    Beyond high-level policy, grassroots movements and community initiatives have been critical in pushing for educational 
+    change in Vanuatu. One prominent example is the advocacy for vernacular education that arose from teachers and villagers 
+    themselves. In the early 2000s, before the government formally adopted mother-tongue instruction, some communities 
+    piloted their own vernacular literacy programs.
+    
+    Aulua, a village on Malekula Island, provides a case in point: local educators and elders developed an alphabet and 
+    teaching materials for the Aulua language and started teaching Class 1 in Aulua. This project—described as "education 
+    dressed up in kastom"—encountered debates over how much local custom and discourse styles should shape the curriculum.
+    
+    Another radical grassroots movement has been the growth of Rural Training Centres (RTCs). Starting in the 1980s and 90s, 
+    churches and community groups established RTCs as an alternative pathway for youth who did not continue in the academic 
+    school system. These centers emphasize practical skills, indigenous knowledge, and community development—aligning with 
+    the self-reliance ethos.
+    """)
 
 # -----------------------------------------------------------------------------
 # Population Trends Section
@@ -392,6 +510,85 @@ try:
 
 except Exception as e:
     st.error(f"Error loading population data: {e}")
+
+# -----------------------------------------------------------------------------
+# Higher Education in Vanuatu
+# -----------------------------------------------------------------------------
+st.header("Higher Education in Vanuatu")
+
+col1, col2 = st.columns([2, 1])
+with col1:
+    st.markdown("""
+    #### Structure of Tertiary Education
+    Vanuatu's higher education sector is relatively young and small, but it has grown significantly in recent years. 
+    For decades after independence, Vanuatu did not have a national university of its own; students pursued tertiary 
+    studies either overseas or through extension programs. This changed with the establishment of the National University 
+    of Vanuatu (NUV), created by Act of Parliament in December 2019.
+    
+    NUV is a bilingual institution—offering courses in both French and English—reflecting Vanuatu's dual colonial heritage 
+    and aiming to serve all linguistic communities. The decision to make NUV bilingual is strategic: it addresses the imbalance 
+    wherein previously most local higher education was in English, which disadvantaged Francophone students.
+    
+    In addition to NUV, Vanuatu hosts a campus of the University of the South Pacific (USP). USP is a regional university 
+    owned by twelve Pacific Island countries, and its Emalus Campus in Port Vila has long been a center for law studies 
+    and other programs for the region.
+    
+    Besides universities, Vanuatu's tertiary landscape includes vocational and technical colleges. The Vanuatu Institute of 
+    Technology (VIT) in Port Vila provides vocational training in trades, business, and information technology. The Vanuatu 
+    College of Nursing Education trains nurses and health workers, and the Vanuatu Agriculture College in Santo offers 
+    programs in tropical agriculture.
+    """)
+
+with col2:
+    # Create a simple visualization of higher education structure
+    edu_structure = pd.DataFrame({
+        'Institution': ['National University of Vanuatu', 'USP Emalus Campus', 'Vanuatu Institute of Technology',
+                      'Agriculture College', 'College of Nursing'],
+        'Type': ['University', 'Regional University', 'Technical Institute', 'Technical College', 'Technical College'],
+        'Programs': [5, 8, 10, 3, 2]  # Approximate number of program offerings
+    })
+    
+    fig = px.bar(edu_structure, x='Institution', y='Programs', color='Type',
+                 title='Higher Education Institutions in Vanuatu',
+                 color_discrete_sequence=px.colors.qualitative.Pastel)
+    fig.update_layout(xaxis={'categoryorder':'total descending'})
+    st.plotly_chart(fig, use_container_width=True)
+
+st.markdown("""
+#### Access and Affordability
+Access to higher education in Vanuatu has historically been limited, but it is gradually improving. Only a small fraction 
+of students progress from secondary school to tertiary level, due in part to the sharp pyramid of the education system. 
+For example, it is reported that around 8,000 children start primary Grade 1 each year, but only on the order of a few 
+hundred complete Year 13, and an even smaller number enroll in university studies.
+
+Cost has been a major barrier. Studying abroad (in Fiji, Australia, or France, for instance) incurs high expenses that 
+most Ni-Vanuatu families cannot afford. The government and international donors provide scholarships to help bridge this gap. 
+Each year, about 40–50 Ni-Vanuatu students receive scholarships to pursue higher education overseas.
+
+The Vanuatu government has made it a priority to expand local tertiary capacity (through NUV and strengthened vocational 
+colleges) so that more students can study "at home" at lower cost. NUV's establishment is expected to reduce the need 
+for expensive overseas study, allowing hundreds of students to get degrees in-country each year.
+
+#### Challenges in Higher Education
+Despite progress, Vanuatu's higher education system faces several challenges:
+- Capacity and quality concerns: shortage of local PhD-qualified faculty, limited research output, nascent quality assurance
+- Infrastructure limitations: limited classroom space, libraries, and laboratories
+- Alignment with national needs: ensuring graduates in priority sectors like engineering, medicine, and technical sciences
+- Brain drain: approximately 80% of overseas graduates do not return to work in the public sector
+
+#### Role of Regional Universities and Workforce Development
+Regional universities have historically played an outsized role in shaping Vanuatu's skilled workforce. The University of 
+the South Pacific has produced many of Vanuatu's leaders in education, government, and business. Similarly, Francophone 
+Ni-Vanuatu have studied at universities in New Caledonia, Tahiti, or France.
+
+By developing NUV, Vanuatu hopes to retain talent and tailor higher education to local context. For example, courses in 
+agriculture or disaster risk management at NUV can be closely tied to Vanuatu's environment and needs, in a way that 
+foreign programs might not.
+
+The establishment of a National University of Vanuatu marks a milestone in the country's educational sovereignty—a move 
+away from complete reliance on regional institutions towards building domestic capacity. With a youthful population 
+(nearly half of Ni-Vanuatu are under 20), investment in tertiary education is crucial for the nation's future.
+""")
 
 # -----------------------------------------------------------------------------
 # Province Data Visualizations Section
@@ -630,6 +827,22 @@ https://doi.org/10.1080/14664208.2013.837217
 **Willans, F. (2015).** Traces of globalised discourses within and around spaces for multilingualism: 
 prospects for education policy change in Vanuatu. *Current Issues in Language Planning, 16,* 113–97. 
 https://doi.org/10.1080/14664208.2014.947021  
+
+**Government of Vanuatu, Ministry of Education and Training (MoET). (2020).** Vanuatu Education and Training Sector Strategic Plan 2020–2030. Port Vila: MoET.
+
+**Ministry of Education and Training (MoET). (n.d.).** Non-Governmental Organizations in Education – VRDTCA (Vanuatu Rural Development Training Centres Association). Retrieved from https://moet.gov.vu/
+
+**Paviour-Smith, M. (2005).** Is it Aulua or education dressed up in "kastom"? Ongoing negotiation of literacy and identity in a Ni-Vanuatu community. Current Issues in Language Planning, 6(2), 224–238.
+
+**Tamtam, H. L. (2008).** The status of English as a language of education and communication in Vanuatu [Conference paper]. Commonwealth of Learning (COL) Oasis repository.
+
+**Willans, F. (2014).** Moving multilingual education forward in Vanuatu: Rethinking the familiar stories about language and education (Summary report of PhD research, University of Oxford).
+
+**Vanuatu Ministry of Education. (2010).** National Curriculum Review Report [Unpublished policy document].
+
+**Vanuatu National Council of Chiefs (Malvatumauri). (2012).** Alternative Indicators of Well-Being for Melanesia: Vanuatu Pilot Study Report. Port Vila: Malvatumauri Press.
+
+**DFAT (Australian Government). (2007).** Vanuatu: The Unfinished State – Drivers of Change. Canberra: AusAID/DFAT analysis report.
 """)
 
 # -----------------------------------------------------------------------------
