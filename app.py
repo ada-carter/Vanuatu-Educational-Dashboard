@@ -7,13 +7,13 @@ from visualizations import *
 from detailed_enrollment_visualizations import *  # Import the new script
 import plotly.graph_objects as go
 import json
+import numpy as np
 
 # Page configuration
 st.set_page_config(layout="wide", page_title="Vanuatu Education Report")
 
 # Add flag image to the top left
-st.image("data/Flag_of_Vanuatu.svg", width=100)
-    
+st.image("data/Flag_of_Vanuatu.svg", width=50)
 # Load data 
 try:
     data = load_data()
@@ -30,7 +30,7 @@ col1, col2 = st.columns([3, 1])
 
 with col1:
     st.title("State of Education in Vanuatu: Comprehensive Analysis")
-    st.markdown("*A detailed examination of educational trends, challenges, and opportunities across Vanuatu's provinces*")
+    st.markdown("*EDUC 310 Final Project - Atticus Carter University of Washington*")
     
     # -----------------------------------------------------------------------------
     # Executive Summary
@@ -123,8 +123,198 @@ st.markdown("""
 """)
 
 st.markdown("""
-The evolution of Vanuatu's education system reflects complex colonial and postcolonial dynamics, with Hindson (1995) describing how colonial-era rational planning models struggled to account for linguistic and cultural diversity. Post-independence reforms have increasingly emphasized community engagement and local authority, aligned with broader movements toward decolonizing education policy across Oceania. As McCormick (2016) discusses, Vanuatu has explored localized, context-driven approaches to development that center indigenous values and languages, often challenging traditional Western models of schooling by incorporating vernacular literacy and local customs into formal curricula. The National Language Policy (2012) marks a significant shift by legitimizing the use of vernacular languages and Bislama, especially in early primary education, with a gradual transition to English or French in later years. Vandeputte-Tavo (2013) and Willans (2015) detail ongoing debates surrounding the status of Bislama versus the perceived socio-economic advantages of English or French, reflecting the complex linguistic landscape of modern Vanuatu's educational system.
+### Independence Movement and Self-Reliance Ideology
+Vanuatu's 1970s independence movement was deeply influenced by socialist and anti‑colonial ideas. The leading party, Vanua'aku Pati (VP), espoused a philosophy of self‑reliance and Melanesian socialism as an alternative to colonial dependency (McCormick, 2016; Premdas, 1987). Father Walter Lini—an Anglican priest and the first Prime Minister—was a key figure who openly embraced socialist ideals in a Melanesian context (Premdas, 1987). He drew inspiration from leaders like Tanzania's Julius Nyerere, frequently praising "the good thoughts" of his "comrade Nyerere" in speeches (Premdas, 1987). Lini's concept of Melanesian socialism blended communal indigenous values with Christian and socialist principles, emphasizing collective welfare, egalitarian decision-making, and local empowerment (Premdas, 1987). This ideological foundation framed education as a tool for nation‑building and self‑determination, rejecting the notion that development should mirror former colonial powers' models (McCormick, 2016; Premdas, 1987).
 """)
+
+# Create tabs for detailed education reforms content
+reform_era_tabs = st.tabs([
+    "Radical Reforms (1980s)", 
+    "Lini's Influence", 
+    "Evolution & Challenges",
+    "Kastom & Modern Values",
+    "Reform Legacy"
+])
+
+with reform_era_tabs[0]:
+    st.markdown("""
+    ### Radical Education Reforms in the Early 1980s
+    
+    Upon achieving independence in 1980, the new government moved swiftly to reshape the education system along self‑reliant lines. The dual British–French colonial school networks were unified under a national Ministry of Education, and officials aimed to indigenize curricula and expand access (David, 2020). Prime Minister Lini's first education plan made primary schooling compulsory for ages 6–11 and targeted a 20% increase in primary schools (David, 2020). 
+    
+    Crucially, these quantitative goals were tied to a radical qualitative shift: colonial curricula were to be overhauled to serve local needs (David, 2020). It was "no longer a question of bringing children the 'enlightenment' of British or French education, but of preparing them to take charge of their country" (David, 2020). Schools were encouraged to teach practical skills and local content so that graduates could use their knowledge for rural community development rather than migrating to towns (David, 2020). 
+    
+    Education was seen as a "lever of development" to foster self‑sufficient villages—for example, by training youth to become farmers, artisans, or entrepreneurs who would revitalize the local economy (David, 2020). This early post‑independence vision explicitly linked education with economic self‑reliance and the reduction of colonial‑era inequalities.
+    """)
+
+with reform_era_tabs[1]:
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.markdown("""
+        ### Vanua'aku Pati and Father Lini's Influence
+        
+        The socialist‑oriented Vanua'aku Pati government under Father Walter Lini was the driving force behind these transformative policies. Lini's personal influence ensured that Melanesian socialism was more than rhetoric—it informed concrete reforms in schooling, land, and local governance (Premdas, 1987). For instance, the VP's development slogan of the 1980s centered on achieving economic self‑reliance, and education was reoriented to support this national goal (David, 2020).
+        
+        Lini believed education should produce citizens capable of "self‑help" and stewardship of their resources, reflecting both Marxist and Christian principles of social justice (David, 2020). Under his leadership, the government promoted vernacular literacy programs and rural training centers to reach communities outside the formal school system (McCormick, 2016; Premdas, 1987).
+        
+        Organizations such as the Vanuatu Rural Development Training Centres Association emerged to provide non‑formal education in villages, teaching basic vocational skills to those who had little formal schooling. By empowering local people through education, Lini and the Vanua'aku Pati saw themselves as fostering a "Melanesian renaissance"—a revival of indigenous values and knowledge suppressed under colonial rule (McCormick, 2016; Premdas, 1987).
+        """)
+    
+    with col2:
+        st.markdown("""
+        #### Key Principles of Lini's Educational Vision:
+        - Self-reliance
+        - Communal welfare
+        - Indigenous knowledge
+        - Practical skills
+        - Rural development
+        - Anti-colonial pedagogy
+        - Christian-socialist values
+        """)
+
+with reform_era_tabs[2]:
+    st.markdown("""
+    ### Challenges and Evolution of Education Policy
+    
+    Despite the bold start, implementing these radical education reforms proved challenging over time. Vanuatu's small size and colonial legacy created practical constraints that tempered the revolution in education. Scholars note that formal, Western‑style educational planning often clashed with local cultural realities; the process "has often been subverted by tensions based in local cultural contexts" (Hindson, 1995).
+    
+    In the early 1980s, political strains—including a secessionist revolt on Espiritu Santo in 1980—and later frequent changes of government hindered steady progress in the education sector (Hindson, 1995). The inherited bilingual system (with distinct English and French streams) also complicated unified policy‑making (Hindson, 1995).
+    
+    As the 1990s unfolded, economic austerity under the Comprehensive Reform Program (1997) reduced public spending, affecting schools and staffing. Many of Lini's socialist initiatives (e.g., cooperatives and communal development schemes) waned amid a turn to market‑oriented policies. Yet, the core ideals did not disappear. Community‑based education efforts and church‑run schools continued to instill values of service and self‑help.
+    
+    By the early 21st century, the government re‑emphasized education access and equity—notably introducing fee‑free primary education in 2010 to uphold the principle that basic education is a universal right (School‑Community Relations and Fee‑Free Education Policy in Vanuatu, n.d.). The balance between the radical vision and practical realities led to a hybrid approach: while standard curricula and donor‑driven projects took root, Vanuatu also sought to preserve the spirit of independence‑era reforms wherever possible.
+    """)
+
+with reform_era_tabs[3]:
+    st.markdown("""
+    ### Kastom, Melanesian Values, and Contemporary Reforms
+    
+    In the 21st century, Vanuatu's education policy continues to be shaped by the ideals of self‑determination and respect for kastom (customary culture). The discourse of decolonizing education remains prominent, often invoked by policymakers and civil society alike (McCormick, 2016). For example, recent national plans explicitly reference the importance of indigenous knowledge and languages in schooling.
+    
+    In 2012, the National Council of Chiefs (Malvatumauri) successfully advocated for recognizing the "traditional economy"—subsistence agriculture, custom exchanges, and indigenous skills—as a foundation for the national curriculum and development strategy (McCormick, 2016). This reflects a continued effort to value local ways of learning and living alongside formal education.
+    
+    As a result, early‑grade instruction in many schools now includes vernacular languages and cultural content, helping bridge students' community life with academic learning. Such measures echo the original post‑independence aim of aligning education with Melanesian values. Studies confirm that the "decolonising discourses of self‑reliance" from the independence era still inform Vanuatu's education and development policies today (McCormick, 2016).
+    
+    In practice, this means schools are encouraged to work with local communities, use local examples in teaching, and produce graduates who are not only globally competent but also firmly rooted in their culture and capable of contributing to their villages.
+    """)
+
+with reform_era_tabs[4]:
+    st.markdown("""
+    ### Legacy of Early Reforms and Key Modern Figures
+    
+    The legacy of Vanuatu's early socialist education reforms is visible in contemporary policy and leadership. Concepts like self‑reliance, community participation, and social equity remain cornerstones of educational planning. Modern leaders and scholars have rejuvenated these themes in current initiatives.
+    
+    For instance, politician Ralph Regenvanu has championed the preservation of kastom and promoted the idea of a kastom‑based education as part of a broader "traditional economy" revival (McCormick, 2016). Likewise, educators—such as those at the University of the South Pacific—emphasize Melanesian pedagogy, or teaching methods that integrate storytelling, communal activities, and respect for elders, reflecting Vanuatu's cultural context.
+    
+    The Ministry of Education's vision statement today still calls for students to gain "the skills, values, and confidence to be self‑reliant," underscoring continuity with the independence generation's goals. In recent years, Vanuatu has navigated global education agendas (e.g., the Sustainable Development Goals) on its own terms: policymakers engage with international standards but filter them through local priorities of resilience and self‑determination (McCormick, 2016).
+    
+    In summary, while the revolutionary zeal of the 1970s–80s has been tempered by experience, Vanuatu's 21st‑century education system remains firmly guided by the ethos of Melanesian socialism—valuing communal welfare, cultural pride, and the capacity for Ni‑Vanuatu to shape their own future through education (McCormick, 2016).
+    """)
+st.markdown("### Timeline of Key Educational Developments")
+# Prepare timeline data with key events only
+timeline_data = [
+    {"year": "1980", "numeric_year": 1980, "short_label": "Independence", 
+     "event": "Independence achieved; dual British-French school systems unified"},
+    {"year": "1985", "numeric_year": 1985, "short_label": "Vernacular programs", 
+     "event": "Vernacular literacy programs and rural training centers established"},
+    {"year": "1997", "numeric_year": 1997, "short_label": "Economic reforms", 
+     "event": "Comprehensive Reform Program introduces economic austerity"},
+    {"year": "2010", "numeric_year": 2010, "short_label": "Fee-free education", 
+     "event": "Fee-free primary education introduced"},
+    {"year": "2012", "numeric_year": 2012, "short_label": "Traditional economy", 
+     "event": "National Council of Chiefs advocates for 'traditional economy' in curriculum"},
+    {"year": "2015", "numeric_year": 2015, "short_label": "Vernacular integration", 
+     "event": "Increased integration of vernacular languages in early education"}
+]
+
+# Convert list to DataFrame and sort chronologically
+timeline_df = pd.DataFrame(timeline_data)
+timeline_df = timeline_df.sort_values('numeric_year')
+
+fig = go.Figure()
+# Create alternating positions above and below the timeline
+for i, row in timeline_df.iterrows():
+    y_val = 0.5 if i % 2 == 0 else -0.5
+    
+    # Define text position before using it
+    text_pos = "top center" if i % 2 == 0 else "bottom center"
+    
+    # Add marker and label
+    fig.add_trace(go.Scatter(
+        x=[row["numeric_year"]],
+        y=[y_val],
+        mode="markers+text",
+        marker=dict(
+            size=14,
+            color="#2b5797",
+            line=dict(width=2, color="DarkSlateGrey")
+        ),
+        text=[row["short_label"]],
+        textposition=text_pos,
+        hovertext=f"<b>{row['year']}</b><br>{row['event']}",
+        hoverinfo="text"
+    ))
+    text_pos = "top center" if i % 2 == 0 else "bottom center"
+    
+    # Add dotted line connector
+    fig.add_shape(
+        type="line",
+        x0=row["numeric_year"],
+        y0=0,
+        x1=row["numeric_year"],
+        y1=y_val,
+        line=dict(color="gray", width=1, dash="dot")
+    )
+    
+    # Add marker and label
+    fig.add_trace(go.Scatter(
+        x=[row["numeric_year"]],
+        y=[y_val],
+        mode="markers+text",
+        marker=dict(
+            size=14,
+            color="#2b5797",
+            line=dict(width=2, color="DarkSlateGrey")
+        ),
+        text=[row["short_label"]],
+        textposition=text_pos,
+        hovertext=f"<b>{row['year']}</b><br>{row['event']}",
+        hoverinfo="text"
+    ))
+
+# Define timeline bounds
+min_year = timeline_df['numeric_year'].min() - 2
+max_year = timeline_df['numeric_year'].max() + 2
+
+# Draw the main timeline
+fig.add_shape(
+    type="line",
+    x0=min_year,
+    y0=0,
+    x1=max_year,
+    y1=0,
+    line=dict(color="gray", width=2)
+)
+
+# Update layout for a more compact display - removed decade markers and year labels
+fig.update_layout(
+    template="simple_white",
+    showlegend=False,
+    xaxis=dict(
+        title="Year",
+        range=[min_year, max_year],
+        tickmode="linear",
+        dtick=10,
+        zeroline=False,
+        showticklabels=False  # Hide the year labels on the x-axis
+    ),
+    yaxis=dict(visible=False, range=[-0.8, 0.8]),
+    margin=dict(l=20, r=20, t=30, b=50),
+    height=350,
+    hoverlabel=dict(bgcolor="white", font_size=14)
+)
+
+st.plotly_chart(fig, use_container_width=True)
 
 # -----------------------------------------------------------------------------
 # Vanuatu in Global Context (HPI and Comparisons)
@@ -139,7 +329,7 @@ except Exception as e:
 st.markdown("""
 Vanuatu consistently ranks high in the **Happy Planet Index (HPI)**, reflecting relatively strong well-being 
 outcomes paired with a lower ecological footprint. By contrast, countries with high per-capita consumption, 
-like the United States, often rank lower. This contrast shows how Vanuatu’s focus on social cohesion, 
+like the United States, often rank lower. This contrast shows how Vanuatu's focus on social cohesion, 
 cultural vitality, and environmental stewardship aligns with broader measures of sustainable well-being.
 """)
 
@@ -423,48 +613,6 @@ st.markdown("""
   fosters local pride, and addresses real-world community challenges.
 """)
 
-st.subheader("Radical Movements and Educational Change in Vanuatu")
-
-col1, col2 = st.columns([1, 1])
-with col1:
-    st.markdown("""
-    #### Education and the Independence Movement
-    Educational change in Vanuatu has often been driven by radical movements and visionary leaders who saw schooling as 
-    central to independence and national development. During the 1970s independence struggle, activists of the Vanua'aku 
-    Pati (the leading nationalist party) criticized the colonial education system for serving foreign interests and a small elite. 
-    
-    They adopted a philosophy of "self-reliance" in development—influenced by other decolonization movements—and pledged 
-    to reshape education to serve local needs. First Prime Minister Father Walter Lini espoused a form of Melanesian socialism 
-    that blended traditional Melanesian values with modern nation-building.
-    
-    Early post-independence policies emphasized basic education and rural training over elitist secondary/tertiary tracks. 
-    For example, the government expanded primary schools into remote villages and supported non-formal education centers 
-    to reach those outside the colonial schools.
-    
-    The discourse of self-reliance continued beyond independence, influencing education and development plans well into 
-    the 21st century. Even as global frameworks like the Millennium Development Goals and Sustainable Development Goals emerged, 
-    Ni-Vanuatu civil society and leaders stressed that local values (kastom) and self-determination should guide how such 
-    goals are pursued.
-    """)
-    
-with col2:
-    st.markdown("""
-    #### Grassroots Advocacy and Resistance
-    Beyond high-level policy, grassroots movements and community initiatives have been critical in pushing for educational 
-    change in Vanuatu. One prominent example is the advocacy for vernacular education that arose from teachers and villagers 
-    themselves. In the early 2000s, before the government formally adopted mother-tongue instruction, some communities 
-    piloted their own vernacular literacy programs.
-    
-    Aulua, a village on Malekula Island, provides a case in point: local educators and elders developed an alphabet and 
-    teaching materials for the Aulua language and started teaching Class 1 in Aulua. This project—described as "education 
-    dressed up in kastom"—encountered debates over how much local custom and discourse styles should shape the curriculum.
-    
-    Another radical grassroots movement has been the growth of Rural Training Centres (RTCs). Starting in the 1980s and 90s, 
-    churches and community groups established RTCs as an alternative pathway for youth who did not continue in the academic 
-    school system. These centers emphasize practical skills, indigenous knowledge, and community development—aligning with 
-    the self-reliance ethos.
-    """)
-
 # -----------------------------------------------------------------------------
 # Population Trends Section
 # -----------------------------------------------------------------------------
@@ -511,124 +659,144 @@ try:
 except Exception as e:
     st.error(f"Error loading population data: {e}")
 
-# -----------------------------------------------------------------------------
-# Higher Education in Vanuatu
-# -----------------------------------------------------------------------------
 st.header("Higher Education in Vanuatu")
 
-# Set up columns for layout
-col1, col2 = st.columns([3, 1])
+# Create tabs for institution-specific details
+tabs = st.tabs([
+    "National University of Vanuatu", 
+    "USP – Emalus Campus", 
+    "Other Institutions"
+])
 
-with col1:
+with tabs[0]:
     st.markdown("""
-    Vanuatu's higher education sector includes a mix of a national university, a regional university campus, and several specialized institutions. Recent official data highlight the National University of Vanuatu (NUV) and the University of the South Pacific's (USP) Emalus Campus as key providers, alongside other recognized colleges and institutes.
+    ### National University of Vanuatu (NUV)
+    
+    Established under Act No. 34 of 2019 and officially published in January 2020, the National University of Vanuatu (NUV) is a public institution located in Port Vila. NUV consolidates existing post‐secondary entities (such as teacher training, technical, and nursing colleges) to provide comprehensive academic programs. Collaborative degree programs with international partners ensure adherence to global academic standards.
     """)
+
+with tabs[1]:
+    st.markdown("""
+    ### University of the South Pacific (USP) – Emalus Campus
     
-    # Create tabs for different institutions
-    institution_tabs = st.tabs([
-        "National University of Vanuatu", 
-        "USP - Emalus Campus",
-        "Specialized Institutions"
-    ])
+    The University of the South Pacific (USP) is a regional institution jointly owned by 12 Pacific countries. Its Emalus Campus in Port Vila, operating since 1989, offers a primary focus on legal studies alongside additional disciplines through flexible learning approaches. The campus contributes to regional higher education by providing both undergraduate and postgraduate courses.
+    """)
+
+with tabs[2]:
+    st.markdown("""
+    ### Other Recognized Higher Education Institutions in Vanuatu
     
-    with institution_tabs[0]:
-        st.markdown("""
-        ### National University of Vanuatu (NUV)
-        The National University of Vanuatu is Vanuatu's newly established public university. It was created by Act No. 34 of 2019, which was passed unanimously by Parliament on December 17, 2019, and officially published on January 24, 2020. NUV's mandate is to provide higher education and lifelong learning in both of Vanuatu's official languages—English and French—through teaching, training, research, and international cooperation. Based in Port Vila (the capital on Efate Island), NUV has begun consolidating several existing post-secondary institutions (e.g., teacher's college, technical institute, nursing college) under its umbrella as it grows.
-
-        NUV currently operates with two faculties (Faculty of Humanities and Faculty of Science and Technology) that encompass various schools. Academic programs have been launched in partnership with overseas universities to ensure internationally recognized credentials. For example, NUV offers bachelor's degrees in fields such as Economics and Social Administration, Tourism and Hospitality, Environmental Science, and Education, as well as master's programs in areas like Economics/Social Sciences and Planning/Management. These programs are delivered in collaboration with institutions such as the University of Toulouse 1 Capitole (France), University of New Caledonia, Victoria University of Wellington (New Zealand), Taylor's University (Malaysia), and James Cook University (Australia), which co-award or accredit the degrees.
-        """)
-        
-    with institution_tabs[1]:
-        st.markdown("""
-        ### University of the South Pacific (USP) – Emalus Campus
-        The University of the South Pacific (USP) is a regional university owned by 12 Pacific countries. Its Emalus Campus in Vanuatu, located in Port Vila, is a major hub for tertiary education. USP was founded in 1968, and the Emalus Campus opened in 1989. Since 1996, Emalus has housed USP's School of Law and the Pacific Islands Legal Information Institute. The term "Emalus" comes from a local Erakor village dialect meaning "the place where it always rains," and the campus occupies a lush 30-acre site in Port Vila.
-
-        USP Emalus is the premier regional campus in Vanuatu and offers a broad range of programs and resources. The primary academic focus at Emalus is law—with students from across the Pacific pursuing a Bachelor of Laws (LL.B) and a Professional Diploma in Legal Practice, as well as other law courses (e.g., contract law, criminal law, international law, environmental law). In addition, Emalus supports studies in disciplines offered by other USP schools via distance and flexible learning. Local students can enroll in undergraduate and postgraduate programs in areas such as science, business, education, and the arts through a combination of face-to-face classes and remote learning tools.
-        """)
-        
-    with institution_tabs[2]:
-        st.markdown("""
-        ### Other Recognized Higher Education Institutions in Vanuatu
-        In addition to NUV and USP, Vanuatu has several other accredited higher education and professional training institutions:
-
-        - **Vanuatu Institute of Technology (VIT)** – Established in 1970, VIT provides certificate and diploma programs in trades and practical fields, including construction, business administration, information technology, hospitality, finance, automotive engineering, and electrical trades.
-
-        - **Vanuatu Institute of Teacher Education (VITE)** – Originally established in 1962 as the Kawenu Teacher Training College, VITE offers diploma programs for primary and secondary teacher education in both language streams.
-
-        - **Vanuatu College of Nursing Education (VCNE)** – Located on the Vila Central Hospital campus, VCNE offers a 3-year Diploma in General Nursing with a midwifery component.
-
-        - **Vanuatu Agriculture College (VAC)** – Located near Luganville on Espiritu Santo, VAC offers certificate and diploma programs in agriculture and related fields.
-
-        - **Vanuatu Maritime College (VMC)** – Established in 1999 in Luganville, VMC provides training for maritime and seafaring skills.
-
-        - **Talua Theological Training Institute (TTTI)** – Formed in 1986, TTTI offers programs ranging from ministry certificates to a three-year Bachelor of Theology.
-
-        - **Australia-Pacific Technical College (APTC)** – A regional vocational training provider funded by the Australian Government, with a campus in Port Vila.
-        """)
-
-with col2:
-    st.markdown("### Higher Education Structure in Vanuatu")
+    Vanuatu is also home to several accredited institutions offering vocational and specialized training:
     
-    # Create visualization of higher education institutions by year established
-    institutions_data = pd.DataFrame({
-        'Institution': ['VITE', 'VIT', 'USP Founded', 'TTTI Formed', 
-                       'USP Emalus', 'VMC', 'APTC', 'NUV'],
-        'Year': [1962, 1970, 1968, 1986, 1989, 1999, 2006, 2019],
-        'Type': ['Specialized', 'Technical', 'Regional University', 'Specialized', 
-                'Regional Campus', 'Technical', 'Technical', 'National University']
-    })
-    
-    # Add current year for timeline context
-    current_year = 2024
-    
-    # Create the timeline visualization
-    fig = px.scatter(institutions_data, 
-                    x='Year', 
-                    y='Institution',
-                    color='Type',
-                    size=[10]*len(institutions_data),
-                    labels={'Year': 'Establishment Year', 'Institution': ''},
-                    title='Timeline of Higher Education Institutions in Vanuatu',
-                    color_discrete_sequence=px.colors.qualitative.Set2)
-    
-    # Add a line to represent the timeline
+    - **Vanuatu Institute of Teacher Education (VITE)** – Founded in 1962, offering diploma programs in teacher education.
+    - **Vanuatu Institute of Technology (VIT)** – Established in 1970, delivering certificate and diploma courses in technical and vocational fields.
+    - **Vanuatu College of Nursing Education (VCNE)** – Provides a 3-year Diploma in General Nursing with a midwifery component.
+    - **Vanuatu Agriculture College (VAC)** – Offers certificate and diploma programs in agriculture.
+    - **Vanuatu Maritime College (VMC)** – Established in 1999, specializing in maritime and seafaring skills.
+    - **Talua Theological Training Institute (TTTI)** – Since 1986, offering academic programs in theological studies.
+    - **Australia-Pacific Technical College (APTC)** – A regional vocational training provider supported by the Australian Government.
+    """)
+
+# Persistent Timeline Section (displayed below the tabs)
+st.markdown("### Timeline of Higher Education Development in Vanuatu")
+
+# Data for timeline
+institutions_data = pd.DataFrame({
+    'Institution': ['VITE', 'VIT', 'USP', 'TTTI', 'USP Emalus', 'VMC', 'APTC', 'NUV'],
+    'Year': [1962, 1970, 1968, 1986, 1989, 1999, 2006, 2019],
+    'Type': ['Specialized', 'Technical', 'Regional University', 'Specialized', 'Regional Campus', 'Technical', 'Technical', 'National University'],
+    'Full_Name': [
+        'Vanuatu Institute of Teacher Education',
+        'Vanuatu Institute of Technology',
+        'University of the South Pacific',
+        'Talua Theological Training Institute',
+        'USP – Emalus Campus',
+        'Vanuatu Maritime College',
+        'Australia-Pacific Technical College',
+        'National University of Vanuatu'
+    ]
+})
+
+# Color mapping for institution types
+color_map = {
+    "Specialized": "#1f77b4",
+    "Technical": "#ff7f0e",
+    "Regional University": "#2ca02c",
+    "National University": "#d62728",
+    "Regional Campus": "#9467bd"
+}
+
+fig = go.Figure()
+
+# Sort data by year to ensure chronological order
+institutions_data = institutions_data.sort_values('Year')
+
+# Add markers for each institution on the timeline
+for i, row in institutions_data.iterrows():
+    fig.add_trace(go.Scatter(
+        x=[row['Year']],
+        y=[0],
+        mode="markers+text",
+        marker=dict(
+            size=16,
+            color=color_map[row['Type']],
+            line=dict(width=2, color="DarkSlateGrey")
+        ),
+        text=[row['Institution']],
+        textposition="top center",
+        name=row['Institution'],
+        hovertemplate=f"<b>{row['Full_Name']}</b><br>Established: {row['Year']}<extra></extra>"
+    ))
+
+# Define timeline bounds
+min_year = institutions_data['Year'].min() - 5
+max_year = institutions_data['Year'].max() + 5
+
+# Draw the main timeline line
+fig.add_shape(
+    type="line",
+    x0=min_year,
+    y0=0,
+    x1=max_year,
+    y1=0,
+    line=dict(color="gray", width=2)
+)
+
+# Add decade markers with minimal design elements
+for decade in range((institutions_data['Year'].min() // 10) * 10, institutions_data['Year'].max() + 10, 10):
     fig.add_shape(
         type="line",
-        x0=min(institutions_data['Year'])-2,
-        y0=-0.5,
-        x1=current_year,
-        y1=-0.5,
-        line=dict(color="gray", width=2)
+        x0=decade,
+        y0=-0.05,
+        x1=decade,
+        y1=0.05,
+        line=dict(color="gray", width=1)
     )
-    
-    # Customize layout
-    fig.update_layout(
-        height=500,
-        xaxis=dict(
-            range=[min(institutions_data['Year'])-5, current_year+2],
-            tickmode='array',
-            tickvals=list(range(1960, current_year+1, 10)),
-        ),
-        yaxis=dict(autorange="reversed"),  # Reverse y-axis to show earliest at bottom
+    fig.add_annotation(
+        x=decade,
+        y=-0.1,
+        text=str(decade),
+        showarrow=False,
+        font=dict(size=10, color="gray")
     )
-    
-    # Adjust hover information
-    fig.update_traces(
-        hovertemplate='<b>%{y}</b><br>Established: %{x}<br>Type: %{marker.color}<extra></extra>'
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
 
-    # Add a small fact box about access to higher education
-    st.markdown("""
-    #### Access to Higher Education
-    - Only ~10% of secondary school graduates progress to tertiary education
-    - NUV enrollment: ~300 students (2023)
-    - USP Emalus enrollment: ~1,200 students
-    - Gender ratio: Close to parity (52% male, 48% female)
-    - ~40-50 scholarships available annually for overseas study
-    """)
+fig.update_layout(
+    template="simple_white",
+    title="Timeline of Higher Education Institutions in Vanuatu",
+    showlegend=False,
+    xaxis=dict(
+        title="Year",
+        range=[min_year, max_year],
+        tickmode="linear",
+        dtick=5,
+        zeroline=False
+    ),
+    yaxis=dict(visible=False),
+    margin=dict(l=20, r=20, t=50, b=50),
+    height=300
+)
+
+st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("""
 #### Access and Affordability
@@ -922,6 +1090,9 @@ Vanuatu: Final report.* Australian Council for Educational Research. https://doi
 teachers' understanding of the role of translation in vernacular language maintenance in Malekula, Vanuatu. 
 *International Journal of Bilingual Education and Bilingualism, 24,* 1414–1430. https://doi.org/10.1080/13670050.2019.1604625  
 
+**David, G. (2020).** Vanuatu's 40th anniversary: Review of the first decade of political independence from 1980 to 1990. 
+*Pacific Geographies, (54),* 15–24. https://doi.org/10.23791/541524
+
 **DFAT (Australian Government). (2007).** Vanuatu: The Unfinished State – Drivers of Change. Canberra: AusAID/DFAT analysis report.
 
 **FAO. (n.d.-a).** Major fields of interest: Vanuatu Maritime College. Retrieved from https://www.fao.org/4/x7308e/x7308e1n.htm#:~:text=Major%20Fields%20of%20Interest%3A
@@ -930,7 +1101,7 @@ teachers' understanding of the role of translation in vernacular language mainte
 
 **Government of Vanuatu, Ministry of Education and Training (MoET). (2020).** Vanuatu Education and Training Sector Strategic Plan 2020–2030. Port Vila: MoET.
 
-**Hindson, C. (1995).** Educational Planning in Vanuatu-an alternative analysis. *Comparative Education, 31,* 
+**Hindson, C. E. (1995).** Educational planning in Vanuatu – an alternative analysis. *Comparative Education, 31(3),* 
 327–338. https://doi.org/10.1080/03050069529010  
 
 **MastersPortal. (n.d.).** Vanuatu Institute of Technology | University Info. Retrieved from https://www.mastersportal.com/universities/14651/vanuatu-institute-of-technology.html#:~:text=VIT%20has%20rich%20roots%20reaching,dual%20language%20programs%20in%201980
@@ -939,8 +1110,8 @@ teachers' understanding of the role of translation in vernacular language mainte
 school curricula: opportunities and challenges from Malekula Island, Vanuatu. *Journal of Ethnobiology and 
 Ethnomedicine, 7,* 38–38. https://doi.org/10.1186/1746-4269-7-38  
 
-**McCormick, A. (2016).** Vanuatu Education Policy post-2015: "Alternative", Decolonising Processes for 
-"Development". *The International Education Journal: Comparative Perspectives, 15,* 16–29.  
+**McCormick, A. (2016).** Vanuatu education policy post-2015: "Alternative", decolonising processes for 
+"development". *International Education Journal: Comparative Perspectives, 15(3),* 16–29.  
 
 **Ministry of Education and Training. (n.d.).** Tertiary Education. Retrieved from https://moet.gov.vu/index.php?id=tertiary-education#:~:text=The%20USP%20Emalus%20campus%20is,for%20local%20and%20overseas%20students
 
@@ -959,6 +1130,11 @@ Ethnomedicine, 7,* 38–38. https://doi.org/10.1186/1746-4269-7-38
 **Pierce, C., & Hemstock, S. (2021).** Resilience in Formal School Education in Vanuatu: A Mismatch with 
 National, Regional and International Policies. *Journal of Education for Sustainable Development, 15,* 
 206–233. https://doi.org/10.1177/09734082211031350  
+
+**Premdas, R. R. (1987).** Melanesian socialism: Vanuatu's quest for self‑definition and problems of implementation. 
+*Pacific Studies, 11(1),* 107–127.
+
+**School‑Community Relations and Fee‑Free Education Policy in Vanuatu. (n.d.).** Retrieved from https://www.jstor.org/stable/48541517
 
 **Talua Theological Training Institute. (n.d.).** About/History. Retrieved from https://ttti.edu.vu/about/history/#:~:text=Presbyterian%20Bible%20College%20on%20Tangoa,course%20to%20train%20lay%20people
 
@@ -983,6 +1159,9 @@ https://doi.org/10.1080/14664208.2013.837217
 **Vanuatu Ministry of Education. (2010).** National Curriculum Review Report [Unpublished policy document].
 
 **Vanuatu National Council of Chiefs (Malvatumauri). (2012).** Alternative Indicators of Well-Being for Melanesia: Vanuatu Pilot Study Report. Port Vila: Malvatumauri Press.
+
+**Willans, F. (2013).** The engineering of plurilingualism following a blueprint for multilingualism: The case of Vanuatu's 
+education language policy. *TESOL Quarterly, 47(3),* 546–573. https://doi.org/10.1002/tesq.113
 
 **Willans, F. (2014).** Moving multilingual education forward in Vanuatu: Rethinking the familiar stories about language and education (Summary report of PhD research, University of Oxford).
 
