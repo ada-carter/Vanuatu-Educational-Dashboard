@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 import json
 
 # Page configuration
-st.set_page_config(layout="wide", page_title="Vanuatu Education Report 2020-2023")
+st.set_page_config(layout="wide", page_title="Vanuatu Education Report")
 
 # Add flag image to the top left
 st.image("data/Flag_of_Vanuatu.svg", width=100)
@@ -29,7 +29,7 @@ except Exception as e:
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    st.title("State of Education in Vanuatu: Comprehensive Analysis 2020-2023")
+    st.title("State of Education in Vanuatu: Comprehensive Analysis")
     st.markdown("*A detailed examination of educational trends, challenges, and opportunities across Vanuatu's provinces*")
     
     # -----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ st.markdown("""
 """)
 
 st.markdown("""
-The evolution of Vanuatu's education system reflects complex colonial and postcolonial dynamics, with Hindson (1995) describing how colonial-era rational planning models struggled to account for linguistic and cultural diversity. Post-independence reforms have increasingly emphasized community engagement and local authority, aligned with broader movements toward decolonizing education policy across Oceania. As McCormick (2016) highlights, Vanuatu has explored localized, context-driven approaches to development that center indigenous values and languages, often challenging traditional Western models of schooling by incorporating vernacular literacy and local customs into formal curricula. The National Language Policy (2012) marks a significant shift by legitimizing the use of vernacular languages and Bislama, especially in early primary education, with a gradual transition to English or French in later years. Vandeputte-Tavo (2013) and Willans (2015) detail ongoing debates surrounding the status of Bislama versus the perceived socio-economic advantages of English or French, reflecting the complex linguistic landscape of modern Vanuatu's educational system.
+The evolution of Vanuatu's education system reflects complex colonial and postcolonial dynamics, with Hindson (1995) describing how colonial-era rational planning models struggled to account for linguistic and cultural diversity. Post-independence reforms have increasingly emphasized community engagement and local authority, aligned with broader movements toward decolonizing education policy across Oceania. As McCormick (2016) discusses, Vanuatu has explored localized, context-driven approaches to development that center indigenous values and languages, often challenging traditional Western models of schooling by incorporating vernacular literacy and local customs into formal curricula. The National Language Policy (2012) marks a significant shift by legitimizing the use of vernacular languages and Bislama, especially in early primary education, with a gradual transition to English or French in later years. Vandeputte-Tavo (2013) and Willans (2015) detail ongoing debates surrounding the status of Bislama versus the perceived socio-economic advantages of English or French, reflecting the complex linguistic landscape of modern Vanuatu's educational system.
 """)
 
 # -----------------------------------------------------------------------------
@@ -139,7 +139,7 @@ except Exception as e:
 st.markdown("""
 Vanuatu consistently ranks high in the **Happy Planet Index (HPI)**, reflecting relatively strong well-being 
 outcomes paired with a lower ecological footprint. By contrast, countries with high per-capita consumption, 
-like the United States, often rank lower. This contrast underscores how Vanuatu’s focus on social cohesion, 
+like the United States, often rank lower. This contrast shows how Vanuatu’s focus on social cohesion, 
 cultural vitality, and environmental stewardship aligns with broader measures of sustainable well-being.
 """)
 
@@ -325,7 +325,7 @@ st.markdown("""
   or French.  
 - **Vandeputte-Tavo (2013)** observes that acceptance of Bislama varies, with debates over whether it should be 
   a primary medium or a supporting language.  
-- **Willans (2015)** highlights the practical strategies teachers use to blend local languages with English 
+- **Willans (2015)** describes the practical strategies teachers use to blend local languages with English 
   or French to ensure comprehension.
 
 **Multilingualism in Practice**  
@@ -485,7 +485,7 @@ try:
         **Population Growth Analysis**
         
         The population trends in Vanuatu show consistent growth, with a significant portion 
-        under 19 years of age. This youthful demographic underscores the urgent need for 
+        under 19 years of age. This high portion of the population shows the urgent need for 
         accessible, high-quality education.
         
         - Growth is especially notable in rural areas, raising logistical challenges for 
@@ -516,43 +516,155 @@ except Exception as e:
 # -----------------------------------------------------------------------------
 st.header("Higher Education in Vanuatu")
 
-col1, col2 = st.columns([2, 1])
+# Set up columns for layout
+col1, col2 = st.columns([3, 1])
+
 with col1:
     st.markdown("""
-    #### Structure of Tertiary Education
-    Vanuatu's higher education sector is relatively young and small, but it has grown significantly in recent years. 
-    For decades after independence, Vanuatu did not have a national university of its own; students pursued tertiary 
-    studies either overseas or through extension programs. This changed with the establishment of the National University 
-    of Vanuatu (NUV), created by Act of Parliament in December 2019.
-    
-    NUV is a bilingual institution—offering courses in both French and English—reflecting Vanuatu's dual colonial heritage 
-    and aiming to serve all linguistic communities. The decision to make NUV bilingual is strategic: it addresses the imbalance 
-    wherein previously most local higher education was in English, which disadvantaged Francophone students.
-    
-    In addition to NUV, Vanuatu hosts a campus of the University of the South Pacific (USP). USP is a regional university 
-    owned by twelve Pacific Island countries, and its Emalus Campus in Port Vila has long been a center for law studies 
-    and other programs for the region.
-    
-    Besides universities, Vanuatu's tertiary landscape includes vocational and technical colleges. The Vanuatu Institute of 
-    Technology (VIT) in Port Vila provides vocational training in trades, business, and information technology. The Vanuatu 
-    College of Nursing Education trains nurses and health workers, and the Vanuatu Agriculture College in Santo offers 
-    programs in tropical agriculture.
+    Vanuatu's higher education sector includes a mix of a national university, a regional university campus, and several specialized institutions. Recent official data highlight the National University of Vanuatu (NUV) and the University of the South Pacific's (USP) Emalus Campus as key providers, alongside other recognized colleges and institutes.
     """)
+    
+    # Create tabs for different institutions
+    institution_tabs = st.tabs([
+        "National University of Vanuatu", 
+        "USP - Emalus Campus",
+        "Specialized Institutions"
+    ])
+    
+    with institution_tabs[0]:
+        st.markdown("""
+        ### National University of Vanuatu (NUV)
+        The National University of Vanuatu is Vanuatu's newly established public university. It was created by Act No. 34 of 2019, which was passed unanimously by Parliament on December 17, 2019, and officially published on January 24, 2020. NUV's mandate is to provide higher education and lifelong learning in both of Vanuatu's official languages—English and French—through teaching, training, research, and international cooperation. Based in Port Vila (the capital on Efate Island), NUV has begun consolidating several existing post-secondary institutions (e.g., teacher's college, technical institute, nursing college) under its umbrella as it grows.
+
+        NUV currently operates with two faculties (Faculty of Humanities and Faculty of Science and Technology) that encompass various schools. Academic programs have been launched in partnership with overseas universities to ensure internationally recognized credentials. For example, NUV offers bachelor's degrees in fields such as Economics and Social Administration, Tourism and Hospitality, Environmental Science, and Education, as well as master's programs in areas like Economics/Social Sciences and Planning/Management. These programs are delivered in collaboration with institutions such as the University of Toulouse 1 Capitole (France), University of New Caledonia, Victoria University of Wellington (New Zealand), Taylor's University (Malaysia), and James Cook University (Australia), which co-award or accredit the degrees.
+        """)
+        
+    with institution_tabs[1]:
+        st.markdown("""
+        ### University of the South Pacific (USP) – Emalus Campus
+        The University of the South Pacific (USP) is a regional university owned by 12 Pacific countries. Its Emalus Campus in Vanuatu, located in Port Vila, is a major hub for tertiary education. USP was founded in 1968, and the Emalus Campus opened in 1989. Since 1996, Emalus has housed USP's School of Law and the Pacific Islands Legal Information Institute. The term "Emalus" comes from a local Erakor village dialect meaning "the place where it always rains," and the campus occupies a lush 30-acre site in Port Vila.
+
+        USP Emalus is the premier regional campus in Vanuatu and offers a broad range of programs and resources. The primary academic focus at Emalus is law—with students from across the Pacific pursuing a Bachelor of Laws (LL.B) and a Professional Diploma in Legal Practice, as well as other law courses (e.g., contract law, criminal law, international law, environmental law). In addition, Emalus supports studies in disciplines offered by other USP schools via distance and flexible learning. Local students can enroll in undergraduate and postgraduate programs in areas such as science, business, education, and the arts through a combination of face-to-face classes and remote learning tools.
+        """)
+        
+    with institution_tabs[2]:
+        st.markdown("""
+        ### Other Recognized Higher Education Institutions in Vanuatu
+        In addition to NUV and USP, Vanuatu has several other accredited higher education and professional training institutions:
+
+        - **Vanuatu Institute of Technology (VIT)** – Established in 1970, VIT provides certificate and diploma programs in trades and practical fields, including construction, business administration, information technology, hospitality, finance, automotive engineering, and electrical trades.
+
+        - **Vanuatu Institute of Teacher Education (VITE)** – Originally established in 1962 as the Kawenu Teacher Training College, VITE offers diploma programs for primary and secondary teacher education in both language streams.
+
+        - **Vanuatu College of Nursing Education (VCNE)** – Located on the Vila Central Hospital campus, VCNE offers a 3-year Diploma in General Nursing with a midwifery component.
+
+        - **Vanuatu Agriculture College (VAC)** – Located near Luganville on Espiritu Santo, VAC offers certificate and diploma programs in agriculture and related fields.
+
+        - **Vanuatu Maritime College (VMC)** – Established in 1999 in Luganville, VMC provides training for maritime and seafaring skills.
+
+        - **Talua Theological Training Institute (TTTI)** – Formed in 1986, TTTI offers programs ranging from ministry certificates to a three-year Bachelor of Theology.
+
+        - **Australia-Pacific Technical College (APTC)** – A regional vocational training provider funded by the Australian Government, with a campus in Port Vila.
+        """)
 
 with col2:
-    # Create a simple visualization of higher education structure
-    edu_structure = pd.DataFrame({
-        'Institution': ['National University of Vanuatu', 'USP Emalus Campus', 'Vanuatu Institute of Technology',
-                      'Agriculture College', 'College of Nursing'],
-        'Type': ['University', 'Regional University', 'Technical Institute', 'Technical College', 'Technical College'],
-        'Programs': [5, 8, 10, 3, 2]  # Approximate number of program offerings
+    st.markdown("### Higher Education Structure in Vanuatu")
+    
+    # Create visualization of higher education institutions by year established
+    institutions_data = pd.DataFrame({
+        'Institution': ['VITE', 'VIT', 'USP Founded', 'TTTI Formed', 
+                       'USP Emalus', 'VMC', 'APTC', 'NUV'],
+        'Year': [1962, 1970, 1968, 1986, 1989, 1999, 2006, 2019],
+        'Type': ['Specialized', 'Technical', 'Regional University', 'Specialized', 
+                'Regional Campus', 'Technical', 'Technical', 'National University']
     })
     
-    fig = px.bar(edu_structure, x='Institution', y='Programs', color='Type',
-                 title='Higher Education Institutions in Vanuatu',
-                 color_discrete_sequence=px.colors.qualitative.Pastel)
-    fig.update_layout(xaxis={'categoryorder':'total descending'})
+    # Add current year for timeline context
+    current_year = 2024
+    
+    # Create the timeline visualization
+    fig = px.scatter(institutions_data, 
+                    x='Year', 
+                    y='Institution',
+                    color='Type',
+                    size=[10]*len(institutions_data),
+                    labels={'Year': 'Establishment Year', 'Institution': ''},
+                    title='Timeline of Higher Education Institutions in Vanuatu',
+                    color_discrete_sequence=px.colors.qualitative.Set2)
+    
+    # Add a line to represent the timeline
+    fig.add_shape(
+        type="line",
+        x0=min(institutions_data['Year'])-2,
+        y0=-0.5,
+        x1=current_year,
+        y1=-0.5,
+        line=dict(color="gray", width=2)
+    )
+    
+    # Customize layout
+    fig.update_layout(
+        height=500,
+        xaxis=dict(
+            range=[min(institutions_data['Year'])-5, current_year+2],
+            tickmode='array',
+            tickvals=list(range(1960, current_year+1, 10)),
+        ),
+        yaxis=dict(autorange="reversed"),  # Reverse y-axis to show earliest at bottom
+    )
+    
+    # Adjust hover information
+    fig.update_traces(
+        hovertemplate='<b>%{y}</b><br>Established: %{x}<br>Type: %{marker.color}<extra></extra>'
+    )
+    
     st.plotly_chart(fig, use_container_width=True)
+
+    # Add a small fact box about access to higher education
+    st.markdown("""
+    #### Access to Higher Education
+    - Only ~10% of secondary school graduates progress to tertiary education
+    - NUV enrollment: ~300 students (2023)
+    - USP Emalus enrollment: ~1,200 students
+    - Gender ratio: Close to parity (52% male, 48% female)
+    - ~40-50 scholarships available annually for overseas study
+    """)
+
+st.markdown("""
+#### Access and Affordability
+Access to higher education in Vanuatu has historically been limited, but it is gradually improving. Only a small fraction 
+of students progress from secondary school to tertiary level, due in part to the sharp pyramid of the education system. 
+For example, it is reported that around 8,000 children start primary Grade 1 each year, but only on the order of a few 
+hundred complete Year 13, and an even smaller number enroll in university studies.
+
+Cost has been a major barrier. Studying abroad (in Fiji, Australia, or France, for instance) incurs high expenses that 
+most Ni-Vanuatu families cannot afford. The government and international donors provide scholarships to help bridge this gap. 
+Each year, about 40–50 Ni-Vanuatu students receive scholarships to pursue higher education overseas.
+
+The Vanuatu government has made it a priority to expand local tertiary capacity (through NUV and strengthened vocational 
+colleges) so that more students can study "at home" at lower cost. NUV's establishment is expected to reduce the need 
+for expensive overseas study, allowing hundreds of students to get degrees in-country each year.
+
+#### Challenges in Higher Education
+Despite progress, Vanuatu's higher education system faces several challenges:
+- Capacity and quality concerns: shortage of local PhD-qualified faculty, limited research output, nascent quality assurance
+- Infrastructure limitations: limited classroom space, libraries, and laboratories
+- Alignment with national needs: ensuring graduates in priority sectors like engineering, medicine, and technical sciences
+- Brain drain: approximately 80% of overseas graduates do not return to work in the public sector
+
+#### Role of Regional Universities and Workforce Development
+Regional universities have historically played an outsized role in shaping Vanuatu's skilled workforce. The University of 
+the South Pacific has produced many of Vanuatu's leaders in education, government, and business. Similarly, Francophone 
+Ni-Vanuatu have studied at universities in New Caledonia, Tahiti, or France.
+
+By developing NUV, Vanuatu hopes to retain talent and tailor higher education to local context. For example, courses in 
+agriculture or disaster risk management at NUV can be closely tied to Vanuatu's environment and needs, in a way that 
+foreign programs might not.
+
+The establishment of a National University of Vanuatu marks a milestone in the country's educational sovereignty—a move 
+away from complete reliance on regional institutions towards building domestic capacity. With a youthful population 
+(nearly half of Ni-Vanuatu are under 20), investment in tertiary education is crucial for the nation's future.
+""")
 
 st.markdown("""
 #### Access and Affordability
@@ -793,6 +905,8 @@ st.markdown("""
 st.markdown("""
 ### References (APA Format)
 
+**Application Form for Diploma in General Nurse Training. (n.d.).** [PDF document]. Retrieved from https://17965218293175009171.googlegroups.com/attach/2ab0d763a40a4/Aplication_Form%20English%20.pdf?part=0.2&vt=ANaJVrEVkJgPvom3cpgumGB4X6c7nkYTUeriTo_ZkxeYqQY78hbrwmfjUpdhH8gva8-Xl1L_HICxmDmFnt8FQUzYzzd0ryfUIXcp2DMvG4B4qaxMr5LQeDM#:~:text=LOCATION%3A%20The%20Vanuatu%20College%20of,all%20the%20people%20in%20Vanuatu
+
 **Cassity, E., Chainey, J., Cheng, J., & Wong, D. (2022).** *Teacher development multi-year study series. 
 Vanuatu: Interim report 2.* Australian Council for Educational Research. https://doi.org/10.37517/978-1-74286-659-8  
 
@@ -802,47 +916,79 @@ Interim report 1.* Australian Council for Educational Research. https://doi.org/
 **Cassity, E., Wong, D., Wendiady, J., & Chainey, J. (2023).** *Teacher development multi-year study series. 
 Vanuatu: Final report.* Australian Council for Educational Research. https://doi.org/10.37517/978-1-74286-729-8  
 
-**Daly, N., & Barbour, J. (2019).** ‘Because, they are from here. It is their identity, and it is important’: 
-teachers’ understanding of the role of translation in vernacular language maintenance in Malekula, Vanuatu. 
+**Cypher Learning. (n.d.).** LMS Best practice: $3.3 million saved with AI-powered course creation. Retrieved from https://www.cypherlearning.com/best-practices/vanuatu-institute-of-technology#:~:text=Image%3A%202024%20Customer%20of%20the,skilled%20labour%20force%20across%20Vanuatu
+
+**Daly, N., & Barbour, J. (2019).** 'Because, they are from here. It is their identity, and it is important': 
+teachers' understanding of the role of translation in vernacular language maintenance in Malekula, Vanuatu. 
 *International Journal of Bilingual Education and Bilingualism, 24,* 1414–1430. https://doi.org/10.1080/13670050.2019.1604625  
+
+**DFAT (Australian Government). (2007).** Vanuatu: The Unfinished State – Drivers of Change. Canberra: AusAID/DFAT analysis report.
+
+**FAO. (n.d.-a).** Major fields of interest: Vanuatu Maritime College. Retrieved from https://www.fao.org/4/x7308e/x7308e1n.htm#:~:text=Major%20Fields%20of%20Interest%3A
+
+**FAO. (n.d.-b).** Fishing: Maritime training details. Retrieved from https://www.fao.org/4/x7308e/x7308e1n.htm#:~:text=Fishing%3A
+
+**Government of Vanuatu, Ministry of Education and Training (MoET). (2020).** Vanuatu Education and Training Sector Strategic Plan 2020–2030. Port Vila: MoET.
 
 **Hindson, C. (1995).** Educational Planning in Vanuatu-an alternative analysis. *Comparative Education, 31,* 
 327–338. https://doi.org/10.1080/03050069529010  
+
+**MastersPortal. (n.d.).** Vanuatu Institute of Technology | University Info. Retrieved from https://www.mastersportal.com/universities/14651/vanuatu-institute-of-technology.html#:~:text=VIT%20has%20rich%20roots%20reaching,dual%20language%20programs%20in%201980
 
 **McCarter, J., & Gavin, M. (2011).** Perceptions of the value of traditional ecological knowledge to formal 
 school curricula: opportunities and challenges from Malekula Island, Vanuatu. *Journal of Ethnobiology and 
 Ethnomedicine, 7,* 38–38. https://doi.org/10.1186/1746-4269-7-38  
 
-**McCormick, A. (2016).** Vanuatu Education Policy post-2015: “Alternative”, Decolonising Processes for 
-“Development”. *The International Education Journal: Comparative Perspectives, 15,* 16–29.  
+**McCormick, A. (2016).** Vanuatu Education Policy post-2015: "Alternative", Decolonising Processes for 
+"Development". *The International Education Journal: Comparative Perspectives, 15,* 16–29.  
+
+**Ministry of Education and Training. (n.d.).** Tertiary Education. Retrieved from https://moet.gov.vu/index.php?id=tertiary-education#:~:text=The%20USP%20Emalus%20campus%20is,for%20local%20and%20overseas%20students
+
+**Ministry of Education and Training. (n.d.-b).** Australia-Pacific Technical College overview. Retrieved from https://moet.gov.vu/index.php?id=tertiary-education#:~:text=The%20APTC%20offers%20Australian%20Certificate,Hospitality%20and%20Community%20Services%20areas
+
+**Ministry of Education and Training. (2024).** JAHVC and VAC Cooperation Framework. Retrieved from https://moet.gov.vu/docs/press-releases/ministry/JAHVC%20and%20VAC%20Cooperation%20Framework_08_2024.pdf#:~:text=On%20August%208%2C%202024%2C%20Vanuatu,Director
+
+**Ministry of Education and Training (MoET). (n.d.).** Non-Governmental Organizations in Education – VRDTCA (Vanuatu Rural Development Training Centres Association). Retrieved from https://moet.gov.vu/
+
+**National University of Vanuatu. (n.d.-a).** Overview. Retrieved from https://www.univ.edu.vu/en/structure/overview#:~:text=The%20Act%20n%C2%B034%20of%202019,on%20the%2024th%20January%202020
+
+**National University of Vanuatu. (n.d.-b).** Programs and partnerships. Retrieved from https://www.univ.edu.vu/en/structure/overview#:~:text=,Jaur%C3%A8s%20University%20%28Bachelor%20in%20tourism
+
+**Paviour-Smith, M. (2005).** "Is it Aulua or education dressed up in "kastom"? Ongoing negotiation of literacy and identity in a Ni-Vanuatu community. Current Issues in Language Planning, 6(2), 224–238.
 
 **Pierce, C., & Hemstock, S. (2021).** Resilience in Formal School Education in Vanuatu: A Mismatch with 
 National, Regional and International Policies. *Journal of Education for Sustainable Development, 15,* 
 206–233. https://doi.org/10.1177/09734082211031350  
 
+**Talua Theological Training Institute. (n.d.).** About/History. Retrieved from https://ttti.edu.vu/about/history/#:~:text=Presbyterian%20Bible%20College%20on%20Tangoa,course%20to%20train%20lay%20people
+
+**Tamtam, H. L. (2008).** The status of English as a language of education and communication in Vanuatu [Conference paper]. Commonwealth of Learning (COL) Oasis repository.
+
+**University of the South Pacific. (n.d.).** History. Retrieved from https://en.wikipedia.org/wiki/University_of_the_South_Pacific#:~:text=,106%20%20An%20extension
+
+**Urban Coconuts. (n.d.).** Theological education in Vanuatu. Retrieved from https://urbancoconuts.org/theological-education/#:~:text=Talua%20Theological%20Training%20Institute%20is,and%20it%20is%20still%20expanding
+
+**USP Emalus. (n.d.).** Emalus Campus overview. Retrieved from https://www.usp.ac.fj/emalus/#:~:text=Emalus%20campus%20in%20Port%20Vila,six%20schools%C2%A0and%20two%20interdisciplinary%20colleges
+
 **Vandeputte-Tavo, L. (2013).** Bislama in the educational system? Debate around the legitimacy of a 
 creole at school in a post-colonial country. *Current Issues in Language Planning, 14,* 254–269. 
 https://doi.org/10.1080/14664208.2013.837217  
 
-**Willans, F. (2015).** Traces of globalised discourses within and around spaces for multilingualism: 
-prospects for education policy change in Vanuatu. *Current Issues in Language Planning, 16,* 113–97. 
-https://doi.org/10.1080/14664208.2014.947021  
+**Vanuatu Agriculture College. (n.d.).** Provider profile and courses. Retrieved from https://vqa.edu.vu/index.php/registered-providers-providers-side/276-vanuatu-agriculture-college#:~:text=,Diploma%20of%20Agriculture
 
-**Government of Vanuatu, Ministry of Education and Training (MoET). (2020).** Vanuatu Education and Training Sector Strategic Plan 2020–2030. Port Vila: MoET.
+**Vanuatu College of Nursing Education. (n.d.).** Registered provider info. Retrieved from https://vqa.edu.vu/index.php/registered-providers-providers-side/278-vanuatu-college-of-nursing-education#:~:text=Latest%20%20Info
 
-**Ministry of Education and Training (MoET). (n.d.).** Non-Governmental Organizations in Education – VRDTCA (Vanuatu Rural Development Training Centres Association). Retrieved from https://moet.gov.vu/
-
-**Paviour-Smith, M. (2005).** Is it Aulua or education dressed up in "kastom"? Ongoing negotiation of literacy and identity in a Ni-Vanuatu community. Current Issues in Language Planning, 6(2), 224–238.
-
-**Tamtam, H. L. (2008).** The status of English as a language of education and communication in Vanuatu [Conference paper]. Commonwealth of Learning (COL) Oasis repository.
-
-**Willans, F. (2014).** Moving multilingual education forward in Vanuatu: Rethinking the familiar stories about language and education (Summary report of PhD research, University of Oxford).
+**Vanuatu Institute of Technology. (n.d.).** Provider profile. Retrieved from https://vqa.edu.vu/index.php/registered-providers-providers-side/242-vanuatu-institute-of-technology#:~:text=,Computer%20Operations
 
 **Vanuatu Ministry of Education. (2010).** National Curriculum Review Report [Unpublished policy document].
 
 **Vanuatu National Council of Chiefs (Malvatumauri). (2012).** Alternative Indicators of Well-Being for Melanesia: Vanuatu Pilot Study Report. Port Vila: Malvatumauri Press.
 
-**DFAT (Australian Government). (2007).** Vanuatu: The Unfinished State – Drivers of Change. Canberra: AusAID/DFAT analysis report.
+**Willans, F. (2014).** Moving multilingual education forward in Vanuatu: Rethinking the familiar stories about language and education (Summary report of PhD research, University of Oxford).
+
+**Willans, F. (2015).** Traces of globalised discourses within and around spaces for multilingualism: 
+prospects for education policy change in Vanuatu. *Current Issues in Language Planning, 16,* 113–97. 
+https://doi.org/10.1080/14664208.2014.947021  
 """)
 
 # -----------------------------------------------------------------------------
