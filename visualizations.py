@@ -244,7 +244,6 @@ def create_population_trend_visualization(population_data, school_age_only=False
         height=500,
         margin=dict(t=60),
         showlegend=True,
-        plot_bgcolor='white'
     )
 
     # Add gridlines for better readability
