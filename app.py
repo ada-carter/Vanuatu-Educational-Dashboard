@@ -30,7 +30,7 @@ col1, col2 = st.columns([3, 1])
 
 with col1:
     st.title("State of Education in Vanuatu: Comprehensive Analysis")
-    st.markdown("*EDUC 310 Final Project - Atticus Carter University of Washington*")
+    st.markdown("*EDUC 310 Final Project - Ada Carter University of Washington*")
     
     # -----------------------------------------------------------------------------
     # Executive Summary
